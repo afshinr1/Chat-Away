@@ -12,26 +12,35 @@ function Rooms() {
   const [roomList, setRoomList] = useState([]);
   const user = JSON.parse(sessionStorage.getItem("user"));
   const username = user.username;
+
+  /* Modals */
   const [createRoomModal, setCreateRoomModal] = useState(false);
   const [roomListModal, setRoomListModal] = useState(false);
 
   /* Display only the first three rooms which the user has joined */
   const currentRooms = roomList.map((room, index) => {
     if (index < 3) {
-      return <RoomCard room={room} />;
+      return <RoomCard key={index} room={room} />;
     }
     return null;
   });
 
   /* Get the rooms that the user has joined from DB */
   useEffect(() => {
+    let unmounted = false;
+
     socket.emit("get myRooms", username);
 
     //Get response
     socket.on("my rooms data", (roomData) => {
-    //  console.log(roomData);
-      setRoomList([...roomData]);
+      //  console.log(roomData);
+      if (!unmounted) {
+        setRoomList([...roomData]);
+      }
     });
+
+    return () => { unmounted = true };
+
   }, [username]);
 
   /* Handle closing the modals */

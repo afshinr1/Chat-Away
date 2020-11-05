@@ -21,7 +21,7 @@ function Login(props) {
       role: null,
       username: response.profileObj.name,
     };
-
+    props.handleLogin();
     sessionStorage.setItem("user", JSON.stringify(user));
     history.push("/");
   };

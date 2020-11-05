@@ -16,8 +16,8 @@ function AllRooms({ openRoomModal, handleModalClose, roomList }) {
   let currentRooms;
 
   /* Map all current rooms with Roomcard  */
-  currentRooms = roomList.map((room) => {
-    return <RoomCard room={room} />;
+  currentRooms = roomList.map((room, index) => {
+    return <RoomCard key={index} room={room} />;
   });
 
   /* Render My Rooms Modal */
