@@ -4,20 +4,26 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import RoomIcon from "@material-ui/icons/Room";
 import HttpsIcon from "@material-ui/icons/Https";
 import { useStyles } from "./RoomsStyles";
+import {history} from '../Utilities/History'
 
 function RoomCard({ room }) {
     const classes = useStyles();
 
+    const handleClick = (e) => {
+      e.preventDefault();
+      history.push(`/chat/${room.uuid}?name=${room.roomName}`)
+    }
+
   return (
     <Card key={room.roomName} className={classes.card}>
-      <CardActionArea onClick={(e) => alert(room.uuid)}>
+      <CardActionArea onClick={handleClick}>
         <CardHeader
           avatar={<RoomIcon />}
           action={
             room.roomType === "public" ? (
-              <HttpsIcon className={classes.cardHeader} />
-            ) : (
               <LockOpenIcon className={classes.cardHeader} />
+            ) : (
+              <HttpsIcon className={classes.cardHeader} />
             )
           }
           title={room.roomName}

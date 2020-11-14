@@ -39,6 +39,9 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  white : {
+    color : "#FEFEFE"
+  },
   /* End of Register container styles */
 
   

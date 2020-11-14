@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
-const { createRoom, joinRoom, getMyRooms } = require("../models/roomsModel");
+const { createRoom, joinRoom, getMyRooms, getPublicRooms } = require("../models/roomsModel");
 
 /* Create a room controller. Creates unique uuid for new room, and requests database to add room */
 const createRoomController = async (roomName, roomType, username) => {
@@ -23,9 +23,21 @@ const joinRoomController = async (room_uuid, username) => {
 
 /* Get all rooms that the user is CURRENTLY joined */
 const getMyRoomsController = async (username) => {
-    const myRooms = await getMyRooms(username);
-    return myRooms;
+  const myRooms = await getMyRooms(username);
+  return myRooms;
+};
+
+const getPublicRoomsController = async () => {
+  
+    const publicRooms = await getPublicRooms();
+    return publicRooms;
+  
 
 };
 
-module.exports = { createRoomController, getMyRoomsController, joinRoomController };
+module.exports = {
+  createRoomController,
+  getMyRoomsController,
+  joinRoomController,
+  getPublicRoomsController,
+};

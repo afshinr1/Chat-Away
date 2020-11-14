@@ -7,6 +7,7 @@ export const useStyles = makeStyles((theme) => ({
   box: {
     display: "flex",
     flexDirection: "column",
+    height : '100%'
   },
   heading: {
     marginTop: theme.spacing(2),

@@ -11,7 +11,7 @@ function LoginForm({ responseGoogle, handleValidate, message }) {
 
   return (
     <form className={classes.form}>
-      <Typography variant="h4">Login Form</Typography>
+      <Typography className={classes.white} variant="h4">Login Form</Typography>
       <Typography variant="body2" className={classes.error} gutterBottom>
         {message}
       </Typography>
@@ -47,7 +47,7 @@ function LoginForm({ responseGoogle, handleValidate, message }) {
         className={classes.divider}
       />
 
-      <Typography variant="subtitle2">Feeling lucky?</Typography>
+      <Typography className={classes.white} variant="subtitle2">Feeling lucky?</Typography>
 
       <GoogleLogin
         className={classes.google}

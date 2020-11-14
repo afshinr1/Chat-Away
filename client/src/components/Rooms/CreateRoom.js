@@ -17,8 +17,11 @@ import { useStyles, getModalStyle } from "./RoomsStyles";
 import React, { useEffect, useState } from "react";
 import { CssTextField } from "./RoomsStyles";
 import { socket } from "../Utilities/API";
+import {useDispatch} from 'react-redux';
+import { addRoom } from "../../actions/MyRoomsActions";
 
 function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
+  const dispatch = useDispatch();
   const username = JSON.parse(sessionStorage.getItem("user")).username;
   const [modalStyle] = React.useState(getModalStyle);
   const [roomName, setRoomName] = useState("");
@@ -44,7 +47,7 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
           draggable: true,
         });
       } else {
-        setRoomList(prevList => [newRoom, ...prevList])
+        dispatch(addRoom(newRoom))
         toast.success(message, {
           position: "top-center",
           autoClose: 5000,
@@ -52,7 +55,7 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
         });
       }
     });
-  }, [setRoomList]);
+  }, [setRoomList, dispatch]);
   return (
     <Modal
       closeAfterTransition
@@ -72,7 +75,7 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
               <CloseIcon />
             </IconButton>
 
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h5" gutterBottom className={classes.white}>
               New Room
             </Typography>
             <CssTextField

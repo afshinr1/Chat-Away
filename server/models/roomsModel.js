@@ -49,6 +49,17 @@ const joinRoom = (room_uuid, username) => {
   });
 };
 
+const getPublicRooms = () => {
+  return new Promise((resolve, reject) => {
+    let query =
+      "SELECT * FROM rooms WHERE roomType=?";
+    connection.query(query, ['public'], (error, results, field) => {
+      resolve(results);
+    });
+  });
+};
+
 module.exports.createRoom = createRoom;
 module.exports.joinRoom = joinRoom;
 module.exports.getMyRooms = getMyRooms;
+module.exports.getPublicRooms = getPublicRooms;

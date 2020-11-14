@@ -7,9 +7,11 @@ import thunk from "redux-thunk";
 import { combineReducers, applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
 import { AuthReducer } from "./reducers/AuthReducer";
+import { MyRoomsReducer} from './reducers/MyRoomsReducer';
 
 const rootReducer = combineReducers({
   AuthReducer: AuthReducer,
+  MyRoomsReducer : MyRoomsReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

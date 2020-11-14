@@ -7,6 +7,8 @@ import Home from "./components/Home/Home";
 import { history } from "./components/Utilities/History";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Chat from "./components/Chat/Chat";
+import Profile from "./components/Profile/Profile";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -22,7 +24,11 @@ function App() {
         <Switch>
           {/*If user is logged in, redirect to app, else redirect to login*/}
           <Route exact path="/">
-            {loggedIn || user ? <Redirect to="/app" /> : <Redirect to="/login" />}
+            {loggedIn || user ? (
+              <Redirect to="/app" />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
 
           {/*Register Route, render register component*/}
@@ -38,6 +44,13 @@ function App() {
           {/*Main app route, render home components*/}
           <Route path="/app">
             <Home />
+          </Route>
+
+          <Route path="/chat/:room">
+            <Chat />
+          </Route>
+          <Route path="/profile">
+            <Profile />
           </Route>
         </Switch>
         <ToastContainer />

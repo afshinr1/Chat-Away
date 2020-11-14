@@ -4,6 +4,9 @@ export const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  white : {
+    color : "#FEFEFE"
+  },
   navbar: {
     backgroundColor: "#0C2340",
   },
@@ -15,6 +18,7 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
+    color : '#FEFEFE'
   },
   img_logo: {
     height: "3rem",

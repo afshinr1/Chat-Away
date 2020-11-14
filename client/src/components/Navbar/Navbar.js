@@ -19,7 +19,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className={classes.grow}>
+    <div >
       <AppBar position="static" className={classes.navbar}>
         <Toolbar>
           <img

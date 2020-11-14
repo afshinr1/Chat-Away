@@ -10,15 +10,16 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useStyles, getModalStyle } from "./RoomsStyles";
 import RoomCard from "./RoomCard";
 
-function AllRooms({ openRoomModal, handleModalClose, roomList }) {
+function MyRooms({ openRoomModal, handleModalClose, roomList }) {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   let currentRooms;
 
   /* Map all current rooms with Roomcard  */
-  currentRooms = roomList.map((room, index) => {
-    return <RoomCard key={index} room={room} />;
-  });
+    currentRooms = roomList.map((room, index) => {
+      return <RoomCard key={index} room={room} />;
+    });
+
 
   /* Render My Rooms Modal */
   return (
@@ -37,7 +38,7 @@ function AllRooms({ openRoomModal, handleModalClose, roomList }) {
             <CloseIcon />
           </IconButton>
 
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" className={classes.white} gutterBottom>
             My Rooms
           </Typography>
 
@@ -48,4 +49,4 @@ function AllRooms({ openRoomModal, handleModalClose, roomList }) {
   );
 }
 
-export default AllRooms;
+export default MyRooms;

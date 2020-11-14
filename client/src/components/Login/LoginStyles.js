@@ -60,6 +60,9 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     backgroundColor: "#27293D",
   },
+  white : {
+    color : '#FFFFFF'
+  },
   textField: {
     color: "#FF0",
     width: "50%",

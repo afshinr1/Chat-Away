@@ -19,7 +19,7 @@ function RegisterForm({ handleRegister, message }) {
 
   return (
     <form className={classes.form}>
-      <Typography variant="h4">Register Form</Typography>
+      <Typography className={classes.white} variant="h4">Register Form</Typography>
       <Typography
         variant="body2"
         className={

@@ -1,0 +1,19 @@
+.input-form {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-top : 20px;
+  }
+  
+  .message-input {
+    border: 2px solid black;
+    padding-left: 0.5rem;
+    flex: 0.9;
+    font-size: 1.2rem;
+    font-weight: bolder;
+  }
+  .message-button {
+    flex: 0.1;
+  }
+  

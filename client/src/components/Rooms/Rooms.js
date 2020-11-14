@@ -3,13 +3,20 @@ import React, { useEffect, useState } from "react";
 import CreateRoom from "./CreateRoom";
 import { AddRoomButton, StyledBadge, useStyles } from "./RoomsStyles";
 import HomeIcon from "@material-ui/icons/Home";
-
+import {useSelector, useDispatch} from 'react-redux'
 import { socket } from "../Utilities/API";
 import AllRooms from "./MyRooms";
 import RoomCard from "./RoomCard";
+import { setMyRooms } from "../../actions/MyRoomsActions";
 function Rooms() {
   const classes = useStyles();
-  const [roomList, setRoomList] = useState([]);
+
+  /* Room list */
+ // const [roomList, setRoomList] = useState([]);
+  const dispatch = useDispatch();
+  const roomList = useSelector(state => state.MyRoomsReducer.roomList)
+ 
+/* User */
   const user = JSON.parse(sessionStorage.getItem("user"));
   const username = user.username;
 
@@ -18,13 +25,19 @@ function Rooms() {
   const [roomListModal, setRoomListModal] = useState(false);
 
   /* Display only the first three rooms which the user has joined */
-  const currentRooms = roomList.map((room, index) => {
-    if (index < 3) {
-      return <RoomCard key={index} room={room} />;
-    }
-    return null;
-  });
+  let currentRooms;
+  if(roomList.length > 0){
+      currentRooms = roomList.map((room, index) => {
+      if (index < 3) {
+        return <RoomCard key={index} room={room} />;
+      }
+      return null;
+    });
+  }else{
+    currentRooms = <Typography gutterBottom variant='body2' align='center' display='block' >You havent joined any rooms yet! Join a room to get started!</Typography>
 
+  }
+    
   /* Get the rooms that the user has joined from DB */
   useEffect(() => {
     let unmounted = false;
@@ -35,13 +48,14 @@ function Rooms() {
     socket.on("my rooms data", (roomData) => {
       //  console.log(roomData);
       if (!unmounted) {
-        setRoomList([...roomData]);
+          dispatch(setMyRooms(roomData));
+      //  setRoomList([...roomData]);
       }
     });
 
     return () => { unmounted = true };
 
-  }, [username]);
+  }, [username, dispatch]);
 
   /* Handle closing the modals */
   const handleModalClose = () => {
@@ -86,7 +100,6 @@ function Rooms() {
         </StyledBadge>
 
         <CreateRoom
-          setRoomList={setRoomList}
           openRoomModal={createRoomModal}
           handleModalClose={handleModalClose}
         />
