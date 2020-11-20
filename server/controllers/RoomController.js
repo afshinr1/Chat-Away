@@ -27,8 +27,8 @@ const getMyRoomsController = async (username) => {
   return myRooms;
 };
 
+/* Get all public rooms*/
 const getPublicRoomsController = async () => {
-  
     const publicRooms = await getPublicRooms();
     return publicRooms;
   

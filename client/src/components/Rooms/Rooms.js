@@ -26,6 +26,7 @@ function Rooms() {
 
   /* Display only the first three rooms which the user has joined */
   let currentRooms;
+
   if(roomList.length > 0){
       currentRooms = roomList.map((room, index) => {
       if (index < 3) {

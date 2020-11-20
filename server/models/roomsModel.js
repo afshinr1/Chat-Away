@@ -49,6 +49,8 @@ const joinRoom = (room_uuid, username) => {
   });
 };
 
+
+/* Get all public rooms from database */
 const getPublicRooms = () => {
   return new Promise((resolve, reject) => {
     let query =

@@ -5,13 +5,20 @@ import Meet from "../Meet/Meet";
 import Navbar from "../Navbar/Navbar";
 import Rooms from "../Rooms/Rooms";
 import { useStyles } from "./HomeStyles";
+import { socket } from "../Utilities/API";
+import Requests from "../Requests/Requests";
 
 /* MAIN PAGE. RENDER ALL 4 COLUMNS */
 
 function Home() {
   const classes = useStyles();
+  const username = JSON.parse(sessionStorage.getItem("user")).username;
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    /* ON FIRST JOINING THE APPLICATION, TELL SERVER USER HAS CONNECTED AND SAVE USERNAME DATA */
+    console.log("Connected");
+    socket.emit("connection", username);
+  }, [username]);
 
   return (
     <Box component="div" width="fullWidth" className={classes.outerContainer}>
@@ -20,10 +27,12 @@ function Home() {
 
       <Grid container className={classes.innerContainer}>
         {/* COL 1 : Leftmost component, FriendList, notifications etc...*/}
-        <Grid item xs={12} md={3} style={{ border: "1px solid red" }}></Grid>
+        <Grid item xs={12} md={3} className={classes.col1}>
+          <Requests />
+        </Grid>
 
         {/*COL 2 : Room list, add a new room */}
-        <Grid item xs={12} md={3} style={{ border: "1px solid blue" }}>
+        <Grid item xs={12} md={3} className={classes.col2}>
           <Rooms />
         </Grid>
 
@@ -33,7 +42,7 @@ function Home() {
         </Grid>
 
         {/* COL 4: People or something? Public rooms */}
-        <Grid item xs={12} md={3} style={{ border: "2px solid green" }}>
+        <Grid item xs={12} md={3} className={classes.col4}>
           <Public />
         </Grid>
       </Grid>

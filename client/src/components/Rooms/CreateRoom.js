@@ -17,9 +17,10 @@ import { useStyles, getModalStyle } from "./RoomsStyles";
 import React, { useEffect, useState } from "react";
 import { CssTextField } from "./RoomsStyles";
 import { socket } from "../Utilities/API";
-import {useDispatch} from 'react-redux';
+import { useDispatch } from "react-redux";
 import { addRoom } from "../../actions/MyRoomsActions";
 
+/* CREATE ROOM MODAL */
 function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
   const dispatch = useDispatch();
   const username = JSON.parse(sessionStorage.getItem("user")).username;
@@ -29,17 +30,21 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
 
   const classes = useStyles();
 
+  /* EMIT EVENT TO SERVER TO CREATE A ROOM WITH ROOM NAME,ROOM TYPE AND USERNAME */
   const handleAddRoom = (e) => {
     e.preventDefault();
     socket.emit("create room", { roomName, roomType, username });
     setRoomName("");
     setRoomType(null);
-
   };
 
   useEffect(() => {
+    /* GET RESPONSE TO CREATE ROOM FROM SERVER */
     socket.on("create room response", (response) => {
-      const { newRoom, message} = response;
+      const { newRoom, message } = response;
+
+      /* IF ROOM NAME ALREADY EXISTS, SHOW ERROR*/
+
       if (message.includes("exists")) {
         toast.error(message, {
           position: "top-center",
@@ -47,7 +52,8 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
           draggable: true,
         });
       } else {
-        dispatch(addRoom(newRoom))
+        /* ELSE AUTOMATICALLY JOIN AND ADD ROOM TO MYROOMS STATE*/
+        dispatch(addRoom(newRoom));
         toast.success(message, {
           position: "top-center",
           autoClose: 5000,
@@ -57,6 +63,8 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
     });
   }, [setRoomList, dispatch]);
   return (
+
+    /* MAIN MODAL */
     <Modal
       closeAfterTransition
       open={openRoomModal}

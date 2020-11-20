@@ -29,14 +29,14 @@ const changeMessageColor = (username, newColor) => {
 
 /* NOT USED CURRENTLY */
 const changeMessageNames = (username, newName) => {
-  messages.forEach((message) => {
-    if (message.username === username) {
-      message.username = newName;
-    }
-  });
+  // messages.forEach((message) => {
+  //   if (message.username === username) {
+  //     message.username = newName;
+  //   }
+  // });
 };
 
-/** USED CURRENTLY **/
+/** USED **/
 const createMessage = (type, text, username) => {
   return {
     text: text,

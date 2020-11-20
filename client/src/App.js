@@ -46,9 +46,13 @@ function App() {
             <Home />
           </Route>
 
+          {/*Chat route with room id, render chat components*/}
+
           <Route path="/chat/:room">
             <Chat />
           </Route>
+
+          {/*Main profile route, render profile components*/}
           <Route path="/profile">
             <Profile />
           </Route>

@@ -2,7 +2,10 @@ const bodyParser = require("body-parser");
 const {
   addUser,
   removeUser,
+  removeUserAll,
+  addUserAll,
   getUser,
+  getIdByUsername,
   getUsersInRoom,
 } = require("./utilities/Users");
 const express = require("express");
@@ -37,8 +40,13 @@ app.use("/", require("./routes"));
 
 /* New User connects to server */
 io.on("connection", (socket) => {
-  console.log("A user has connected" + socket.id);
+  console.log("A user has connected " + socket.id);
 
+  /* Add user to all user list on first connect*/
+  socket.on("connection", (username) => {
+    console.log("on first connect", username);
+    addUserAll(socket.id, username);
+  });
   /* ROOMS */
 
   /* Get all rooms for a user */
@@ -56,12 +64,12 @@ io.on("connection", (socket) => {
     let result = createRoomController(roomName, roomType, username);
     console.log("create room ");
     result.then((res) => {
-      console.log(res);
+    //  console.log(res);
       socket.emit("create room response", res);
     });
   });
 
-  /* Join new (public) room */
+  /* Join new room */
   socket.on("join room", (data) => {
     const { room_uuid, username } = data;
     console.log("Joining room " + room_uuid + " by " + username);
@@ -82,7 +90,7 @@ io.on("connection", (socket) => {
   });
   /* END OF ROOMS */
 
-  /* CHAT DATA */
+  /*** CHAT DATA ***/
   /* ON JOINING A NEW CHAT ROOM */
   socket.on("join", (event, callback) => {
     let { username, room } = event;
@@ -92,35 +100,38 @@ io.on("connection", (socket) => {
       return callback(error);
     }
 
+    /* GET ALL USERS IN THE ROOM */
     const roomUsers = getUsersInRoom(user.room);
     let userMsg = createMessage(
       "text",
       `${username} Welcome to the room`,
       "admin"
     );
+    /* SEND MESSAGE TO USER WHO JUST CONNECTED */
     socket.emit("message", userMsg);
     let roomMsg = createMessage("text", `${username} has Joined`, "admin");
 
+    /* SEND MESSAGE TO OTHER USRES IN ROOM THAT NEW USER CONNECTED */
     socket.broadcast.to(user.room).emit("message", roomMsg);
     socket.join(user.room);
 
-    /* SEND ROOM DATA TO EVERYONE IN ROOM WHEN NEW USER JOINS.  NOT YET IMPLEMENTED IN CLIENT SIDE */
+    /* SEND ROOM DATA TO EVERYONE IN ROOM WHEN NEW USER JOINS */
     io.to(user.room).emit("roomData", { room: user.room, users: roomUsers });
 
     callback();
   });
 
-  /* SEND A MESSAGE TO THE ROOM */
+  /* GET A MESSAGE FROM A USER. THEN SEND THE MESSAGE TO THE ROOM */
   socket.on("sendMessage", (message) => {
     const user = getUser(socket.id);
-    console.log(
-      `server got message ${message} by ${message.username} in room ${user.room}`
-    );
+    // console.log(
+    //   `server got message ${message} by ${message.username} in room ${user.room}`
+    // );
     let newMsg = createMessage(message.type, message.text, user.username);
     io.to(user.room).emit("message", newMsg);
   });
 
-  /* User Leaves a room */
+  /* User Leaves a room. remove from user list who are in rooms*/
   socket.on("leave room", (username) => {
     console.log("A user has left");
     const user = removeUser(socket.id);
@@ -136,12 +147,32 @@ io.on("connection", (socket) => {
     }
   });
 
+  /* REQUEST TO ADD USER TO ROOM. SEND NOTIFICATION TO TARGET USER IF ONLINE/EXISTS IN ALLUSRES ONLINE */
+  socket.on("add user to room", (obj) => {
+    console.log(obj);
+    const { user, roomObj, requestedBy } = obj;
+    let targetUser = getIdByUsername(user);
+    if (targetUser !== "") {
+      let targetId = targetUser.id;
+      let targetUsername = targetUser.username;
+      if (targetUsername === requestedBy) {
+        socket.emit("add user same username");
+      } else {
+        socket.emit("add user success");
+        io.to(targetId).emit("room request", obj);
+      }
+    } else {
+      socket.emit("add user error");
+    }
+  });
   /* END OF CHAT DATA */
 
   /** On user disconnect */
   socket.on("disconnect", () => {
     console.log("A user disconected");
+    removeUserAll(socket.id);
     const user = removeUser(socket.id);
+
     if (user) {
       let message = createMessage("text", `${user.username} has left`, "admin");
       io.to(user.room).emit("message", message);

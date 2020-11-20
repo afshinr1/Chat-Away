@@ -14,7 +14,6 @@ export default function PublicRoomCard({
   handleError,
 }) {
   const classes = useStyles();
-  console.log(exists);
   return (
     <Card className={classes.card}>
       <CardHeader

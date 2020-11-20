@@ -39,7 +39,7 @@ export const useStyles = makeStyles((theme) => ({
   }));
 
 
-  
+/* MEET BUTTON STYLES */
 export const MeetButton = withStyles({
     root: {
       boxShadow: "none",
@@ -54,7 +54,6 @@ export const MeetButton = withStyles({
       backgroundColor: "#E2E2E2",
       borderColor: "#0063cc",
       fontFamily: [
-        '"Segoe UI"',
         "Roboto",
         '"Helvetica Neue"',
         "Arial",

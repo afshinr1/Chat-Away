@@ -4,7 +4,10 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import PublicRooms from "./PublicRooms/PublicRooms";
 
+/* 4th COLUMN IN MAIN PAGE. PUBLIC DATA (PUBLIC PEOPLE?, PUBLIC ROOMS) */
 export default function Public() {
+
+  /* FOR SWITCHING TABS */
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -26,6 +29,8 @@ export default function Public() {
           <Tab label="Public Rooms"/>
         </Tabs>
       </AppBar>
+     
+     {/* nEED ADD PEOPLES COMPONENT */}
      {value === 0 ? <h1>PeoplesComponent</h1> : <PublicRooms />}
  
     </div>

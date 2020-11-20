@@ -19,7 +19,7 @@ function Login(props) {
       lastName: response.profileObj.familyName,
       profile_img: response.profileObj.imageUrl,
       role: null,
-      username: response.profileObj.name,
+      username: response.profileObj.name.toLowerCase(),
     };
     props.handleLogin();
     sessionStorage.setItem("user", JSON.stringify(user));

@@ -1,0 +1,14 @@
+.roomInfo_container{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.header{
+    margin: 5px;
+    text-decoration: underline;
+}
+
+.onlineUsers{
+    margin: 10px;
+}

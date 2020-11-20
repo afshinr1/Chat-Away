@@ -4,15 +4,19 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import RoomIcon from "@material-ui/icons/Room";
 import HttpsIcon from "@material-ui/icons/Https";
 import { useStyles } from "./RoomsStyles";
-import {history} from '../Utilities/History'
+import { history } from "../Utilities/History";
 
+/* ROOM CARD */
 function RoomCard({ room }) {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const handleClick = (e) => {
-      e.preventDefault();
-      history.push(`/chat/${room.uuid}?name=${room.roomName}`)
-    }
+  /* ONCLICK A ROOM CARD, GO TO CHAT WINDOW FOR THE ROOM */
+  const handleClick = (e) => {
+    e.preventDefault();
+    history.push(
+      `/chat/${room.uuid}?name=${room.roomName}&type=${room.roomType}&host=${room.host}`
+    );
+  };
 
   return (
     <Card key={room.roomName} className={classes.card}>
@@ -20,6 +24,7 @@ function RoomCard({ room }) {
         <CardHeader
           avatar={<RoomIcon />}
           action={
+            /* SHOW DIFFERENT ICON IF ROOM IS PRIVATE OR PUBLIC */
             room.roomType === "public" ? (
               <LockOpenIcon className={classes.cardHeader} />
             ) : (

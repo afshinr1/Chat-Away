@@ -9,6 +9,13 @@ function LoginForm({ responseGoogle, handleValidate, message }) {
   const [password, setPassword] = useState("");
   const classes = useStyles();
 
+  const handleEnter = (e) => {
+    if (e.keyCode === 13) {
+      if(username && password)
+        handleValidate(username, password);
+    }
+  };
+
   return (
     <form className={classes.form}>
       <Typography className={classes.white} variant="h4">Login Form</Typography>
@@ -28,6 +35,8 @@ function LoginForm({ responseGoogle, handleValidate, message }) {
         color="primary"
         label="Password"
         type="password"
+        onKeyDown={handleEnter}
+
         onChange={(e) => setPassword(e.target.value)}
         value={password}
         required

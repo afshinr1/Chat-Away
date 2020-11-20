@@ -38,12 +38,15 @@ function Input({ handleMessage }) {
 
   return (
     <Box display="flex" component="div" className="input-form">
+      {/* MAIN INPUT FOR SENDING TEXT MESSAGES */}
       <input
         onChange={(e) => setMessage(e.target.value)}
         value={message}
         className="message-input"
         onKeyDown={handleEnter}
       />
+
+      {/* OPEN DRAWING MODAL TO SEND DRAWINGS */}
       <Button
         startIcon={<BorderColorIcon />}
         color="secondary"
@@ -58,6 +61,8 @@ function Input({ handleMessage }) {
         open={open}
         handleClose={handleClose}
       />
+
+      {/* SEND BUTTON */}
       <Button
         className="message-button"
         color="primary"

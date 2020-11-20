@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { BackButton, useStyles } from "./ChatStyles";
@@ -8,21 +8,28 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useLocation } from "react-router-dom";
 import ChatContainer from "./ChatContainer/ChatContainer";
 import { socket } from "../Utilities/API";
+import RoomInfo from "./RoomInfo/RoomInfo";
+import Miscellaneous from "./Miscellaneous/Miscellaneous";
 
 /* MAIN CHAT WINDOW */
 function Chat() {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const roomName = query.get("name");
+  const type = query.get("type");
+  const host = query.get("host");
   const classes = useStyles();
+  const [onlineUsers, setonlineUsers] = useState([]);
+
   const username = JSON.parse(sessionStorage.getItem("user")).username;
   const { room } = useParams();
+  const roomObj = { roomType: type, host, roomName, uuid: room };
 
-  /* ON CLICKING ON A ROOM, JOIN THE ROOM BY EMITING TO SERVER JOIN EVENT */
   useEffect(() => {
     // console.log(room);
     // console.log(username);
 
+    /* ON CLICKING ON A ROOM, JOIN THE ROOM BY EMITING TO SERVER JOIN EVENT WITH USERNAME AND ROOM UUID*/
     socket.emit("join", { username, room }, (error) => {
       if (error) {
         alert(error);
@@ -30,11 +37,25 @@ function Chat() {
       }
     });
 
-    /* ON LEAVING ROOM, TELL SERVER TO LEAVE ROOM */
+    /* ON LEAVING ROOM, TELL SERVER THIS USERNAME TO LEAVE ROOM */
     return function cleanup() {
       socket.emit("leave room", username);
     };
   }, [room, username]);
+
+  useEffect(() => {
+    /* SET THE ONLINE USERS ON THIS EVENT. GETS THIS EVENT WHEN FIRST JOINING A ROOM AND WHEN A USER LEAVES THE ROOM */
+
+    let unmounted = false;
+    socket.on("roomData", (data) => {
+      // console.log("Got room data");
+      // console.log(data);
+      if (!unmounted) setonlineUsers(data.users);
+    });
+    return () => {
+      unmounted = true;
+    };
+  }, []);
 
   return (
     <Box component="div" width="fullWidth" className={classes.outerContainer}>
@@ -49,7 +70,7 @@ function Chat() {
           className={classes.btn}
           startIcon={<ArrowBackIcon />}
         >
-          Go Back
+          Back
         </BackButton>
         <Typography color="inherit" display="inline" variant="h5">
           Room Name : {roomName}
@@ -60,15 +81,19 @@ function Chat() {
 
       <Grid container className={classes.innerContainer}>
         {/*COL 1:  ADD NEW PESRON/ KICK PERSON FROM ROOM? */}
-        <Grid item xs={2} style={{ border: "1px solid blue" }}></Grid>
+        <Grid item xs={2} className={classes.col1}>
+          <Miscellaneous onlineUsers={onlineUsers} roomObj={roomObj} />
+        </Grid>
 
         {/*COL 2:  CHAT AREA. SEND AND RECIEVE MESSAGES*/}
-        <Grid item xs={8} style={{ border: "1px solid green" }}>
+        <Grid item xs={8} className={classes.col2}>
           <ChatContainer username={username} />
         </Grid>
 
         {/*COL 3:  RENDER ALL PEOPLE IN ROOM?*/}
-        <Grid item xs={2} style={{ border: "1px solid red" }}></Grid>
+        <Grid item xs={2} className={classes.col3}>
+          <RoomInfo onlineUsers={onlineUsers} username={username} />
+        </Grid>
       </Grid>
     </Box>
   );

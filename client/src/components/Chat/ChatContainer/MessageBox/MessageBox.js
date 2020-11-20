@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Box, makeStyles } from "@material-ui/core";
 import Message from "./Message";
 
+/* MESSAGE BOX HEIGHT, TILL SCROLL BAR APPEARS */
 const useStyles = makeStyles({
   scroll: {
     overflowY: "auto",
@@ -10,12 +11,12 @@ const useStyles = makeStyles({
   },
 });
 
-/* MESSAGE BOX WINDOW */
+/* MESSAGE BOX WINDOW COMPONENT*/
 function MessageBox({ username, messages }) {
   const classes = useStyles();
   const messageEl = useRef(null);
 
-  /* USED FOR SCROLLING TO BOTTOM AUTOMATICALLY */
+  /* USED FOR SCROLLING TO BOTTOM AUTOMATICALLY ON NEW MESSAGE */
   useEffect(() => {
     if (messageEl) {
       messageEl.current.addEventListener("DOMNodeInserted", (event) => {

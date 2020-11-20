@@ -11,12 +11,17 @@ function Message({ message, username }) {
     return (
       <>
         <div className="user-info justifyEnd pr-10">
+          {/* USER USERNAME */}
           <Typography variant="body2" className="sentText pl-10">
             {message.username} :
           </Typography>
+
+          {/* DATE */}
           <Typography variant="caption"> {message.date}</Typography>
         </div>
+
         <div className="messageContainer pr-10 justifyEnd">
+          {/* MESSAGE IS A TEXT (i.e not a picture) */}
           {message.type === "text" ? (
             <div className={`messageBox backgroundBlue `}>
               <Typography
@@ -28,23 +33,28 @@ function Message({ message, username }) {
               </Typography>
             </div>
           ) : (
+            /* MESSAGE IS A PICTURE */
             <img className="message_img" src={`${message.text}`} alt="" />
           )}
         </div>
       </>
     );
-  } 
-  /* IF MESSAGE BY OTHER USERS, APPLY THESE */
-  else {
+  } else {
+    /* IF MESSAGE BY OTHER USERS, APPLY THESE */
     return (
       <>
         <div className="user-info pl-10">
+          {/* USER USERNAME */}
           <Typography variant="body2" className="sentText pl-10">
             {message.username} :
           </Typography>
+
+          {/* DATE */}
           <Typography variant="caption">{message.date}</Typography>
         </div>
+
         <div className="messageContainer justifyStart pl-10">
+          {/* MESSAGE IS A TEXT (i.e not a picture) */}
           {message.type === "text" ? (
             <div className="messageBox backgroundLight">
               <Typography
@@ -56,6 +66,7 @@ function Message({ message, username }) {
               </Typography>
             </div>
           ) : (
+            /* MESSAGE IS A PICTURE */
             <img className="message_img" src={`${message.text}`} alt="" />
           )}
         </div>

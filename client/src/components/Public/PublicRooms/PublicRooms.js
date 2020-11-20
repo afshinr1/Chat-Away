@@ -36,7 +36,6 @@ const PublicRooms = () => {
     socket.emit("get public rooms");
 
     socket.on("public room data", (data) => {
-      console.log(data);
       if (!unmounted) {
         setPublicRooms(data);
       }

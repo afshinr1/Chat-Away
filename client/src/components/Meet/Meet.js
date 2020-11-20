@@ -5,7 +5,7 @@ import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import { history } from '../Utilities/History';
 
 /* UNFINISHED */
-/* THIRD COLUMN IN MAIN PAGE */
+/* THIRD COLUMN IN MAIN PAGE. PROFILE BUTTON AND MEET SOMEONE NEW */
 function Meet() {
     const classes = useStyles();
 

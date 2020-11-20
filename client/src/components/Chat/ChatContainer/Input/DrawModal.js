@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { IconButton } from "@material-ui/core";
 
+/* SET THE MODAL WIDTH/HEIGHT AND STYLES FOR OUTER CONTAINER. ALSO EXIT ICON STYLES */
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -29,9 +30,12 @@ const drawingStyles = {
   height: "70vh",
 };
 
+/* MAIN DRAW MODAL COMPONENT */
 function DrawModal({ handleImage, open, handleClose }) {
   const classes = useStyles();
 
+
+  /* USED TO SEND IMAGE TO SERVER */
   const handleSave = (image) => {
     //  console.log(image);
     handleImage(image.dataUrl);

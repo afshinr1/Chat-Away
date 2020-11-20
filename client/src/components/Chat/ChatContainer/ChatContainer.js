@@ -4,10 +4,11 @@ import MessageBox from "./MessageBox/MessageBox";
 import { socket } from "../../Utilities/API";
 import "./ChatContainerStyles.css";
 
-/** CHAT WINDOW TO SEND AND RECIEVE MESSAGES */
+/** CHAT WINDOW TO SEND AND RECIEVE MESSAGES, AND DISPLAY MESSAGES IN MESSAGE BOX */
 function ChatContainer({ username }) {
   const [messages, setMessages] = useState([]);
 
+  /* ON NEW MESSAGE TO THIS ROOM, ADD TO MESSAGE LIST AND RENDER */
   useEffect(() => {
     let unmounted = false;
 
@@ -28,6 +29,7 @@ function ChatContainer({ username }) {
     socket.emit("sendMessage", msg);
   };
 
+  /*RENDER MESSAGE BOX AND INPUT BOX */
   return (
     <div className="chat-outerContainer">
       <MessageBox username={username} messages={messages} />
