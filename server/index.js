@@ -6,6 +6,7 @@ const {
   addUserAll,
   getUser,
   getIdByUsername,
+  getIdByUsernameRoom,
   getUsersInRoom,
 } = require("./utilities/Users");
 const express = require("express");
@@ -165,6 +166,29 @@ io.on("connection", (socket) => {
       socket.emit("add user error");
     }
   });
+
+  /* REQUEST TO KICK A USER FROM ROOM. SEND NOTIFICATION TO TARGET USER IF THEYRE IN ROOM AND SEND NEW ROOM DATA */
+socket.on('kick user from room', obj => {
+  console.log('in kick user');
+  const { username, roomObj, requestedBy } = obj;
+  let targetUser = getIdByUsernameRoom(username, roomObj.uuid);
+  console.log(targetUser);
+  if (targetUser !== "") {
+    let targetId = targetUser.id;
+    let targetUsername = targetUser.username;
+    if (targetUsername === requestedBy) {
+      socket.emit("kick user same username");
+    } else {
+      socket.emit("kick user success");
+      io.to(targetId).emit("got kicked", obj);
+   }
+  } else {
+    socket.emit("kick user error");
+  }
+
+
+})
+
   /* END OF CHAT DATA */
 
   /** On user disconnect */

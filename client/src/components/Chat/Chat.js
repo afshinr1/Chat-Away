@@ -10,6 +10,7 @@ import ChatContainer from "./ChatContainer/ChatContainer";
 import { socket } from "../Utilities/API";
 import RoomInfo from "./RoomInfo/RoomInfo";
 import Miscellaneous from "./Miscellaneous/Miscellaneous";
+import { toast } from "react-toastify";
 
 /* MAIN CHAT WINDOW */
 function Chat() {
@@ -45,13 +46,21 @@ function Chat() {
 
   useEffect(() => {
     /* SET THE ONLINE USERS ON THIS EVENT. GETS THIS EVENT WHEN FIRST JOINING A ROOM AND WHEN A USER LEAVES THE ROOM */
-
     let unmounted = false;
     socket.on("roomData", (data) => {
       // console.log("Got room data");
       // console.log(data);
       if (!unmounted) setonlineUsers(data.users);
     });
+
+    /* GOT KICKED, LEAVE ROOM */
+    socket.on("got kicked", (obj) => {
+      history.push("/");
+      toast.error("Got Kicked From The Room!", {
+        position: "top-center",
+      });
+    });
+
     return () => {
       unmounted = true;
     };
@@ -82,7 +91,11 @@ function Chat() {
       <Grid container className={classes.innerContainer}>
         {/*COL 1:  ADD NEW PESRON/ KICK PERSON FROM ROOM? */}
         <Grid item xs={2} className={classes.col1}>
-          <Miscellaneous onlineUsers={onlineUsers} roomObj={roomObj} />
+          <Miscellaneous
+            onlineUsers={onlineUsers}
+            host={host}
+            roomObj={roomObj}
+          />
         </Grid>
 
         {/*COL 2:  CHAT AREA. SEND AND RECIEVE MESSAGES*/}

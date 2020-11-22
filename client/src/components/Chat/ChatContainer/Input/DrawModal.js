@@ -34,7 +34,6 @@ const drawingStyles = {
 function DrawModal({ handleImage, open, handleClose }) {
   const classes = useStyles();
 
-
   /* USED TO SEND IMAGE TO SERVER */
   const handleSave = (image) => {
     //  console.log(image);

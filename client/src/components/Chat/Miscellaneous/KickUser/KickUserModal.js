@@ -7,15 +7,14 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { toast } from "react-toastify";
-import { useStyles, getModalStyle, AddUserTextField } from "./AddUserStyles";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
+import { useStyles, getModalStyle, AddUserTextField } from "./KickUserStyles";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useState, useEffect } from "react";
 import { socket } from "../../../Utilities/API";
-import AddIcon from '@material-ui/icons/Add';
-import { v4 as uuidv4 } from "uuid";
 
 /* INVITE USER TO A ROOM MODAL COMPONENT */
-function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
+function KickUserModal({ openKickUserModal, handleModalClose, roomObj }) {
   const username = JSON.parse(sessionStorage.getItem("user")).username;
   const [modalStyle] = React.useState(getModalStyle);
   const [input, setInput] = useState("");
@@ -25,62 +24,60 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
   /* SUBMIT ON ENTER PRESS */
   const handleEnter = (e) => {
     if (e.keyCode === 13) {
-      handleAddUser();
+      handleKickUser();
     }
   };
 
   useEffect(() => {
-    /* RECIEVE ERROR FROM SERVER IF INVITED USER CURRENTLY IS NOT ONLINE */
-    socket.on("add user error", () => {
-      toast.warning("User currently not online!", {
+    /* RECIEVE ERROR FROM SERVER IF KICKED USER CURRENTLY IS NOT IN ROOM */
+    socket.on("kick user error", () => {
+      toast.warning("User currently not in room!!", {
         position: "top-center",
       });
     });
 
-    /* RECIEVE ERROR FROM SERVER IF INVITED USER IS YOURSELF */
-    socket.on("add user same username", () => {
-      toast.info("You cannot request to add yourself!", {
+    /* RECIEVE ERROR FROM SERVER IF KICKED USER IS YOURSELF */
+    socket.on("kick user same username", () => {
+      toast.info("You cannot kick yourself!", {
         position: "top-center",
       });
     });
 
-    /* RECIEVE SUCCESS MESSAGE FROM SERVER IF INVITED WAS INVITED SUCCESSFULLY*/
-    socket.on("add user success", () => {
-      toast.success("Successfully requested user!", {
+    /* RECIEVE SUCCESS MESSAGE FROM SERVER IF KICKED SUCCESSFULLY*/
+    socket.on("kick user success", () => {
+      toast.success("Successfully kicked user!", {
         position: "top-center",
       });
     });
   }, []);
 
-  /* SEND INVITATION TO USER WITH {user = username}. SEND ROOM DATA TO USER REQUESTED*/
-  const handleAddUser = (e) => {
+  /* HANDLE KICKING USER FROM THE ROOM */
+  const handleKickUser = (e) => {
     let newInput = input.trim();
-    const requestId = uuidv4();
-    const msg = { requestId, user: newInput, roomObj, requestedBy: username };
+    const msg = { username: newInput, roomObj, requestedBy: username };
     if (newInput) {
-      socket.emit("add user to room", msg);
+      socket.emit("kick user from room", msg);
     } else {
       toast.warning("Please enter a valid username", {
         position: "top-center",
       });
     }
-    setInput('');
-
+    setInput("");
   };
 
   return (
     <Modal
       closeAfterTransition
       onClose={handleModalClose}
-      open={openAddUserModal}
+      open={openKickUserModal}
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
     >
-      <Fade in={openAddUserModal}>
+      <Fade in={openKickUserModal}>
         <div style={modalStyle} className={classes.modalBox}>
-          <Typography>Add User</Typography>
+          <Typography>Kick User</Typography>
           <AddUserTextField
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleEnter}
@@ -91,12 +88,12 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
           />
           <Button
             className={classes.btn}
-            color="primary"
-            onClick={handleAddUser}
+            color="secondary"
+            onClick={handleKickUser}
             variant="contained"
-            startIcon ={<AddIcon />}
+            startIcon={<RemoveCircleOutlineIcon />}
           >
-            Add
+            Kick
           </Button>
 
           <IconButton className={classes.closeIcon} onClick={handleModalClose}>
@@ -108,4 +105,4 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
   );
 }
 
-export default AddUserModal;
+export default KickUserModal;

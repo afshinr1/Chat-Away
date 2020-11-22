@@ -63,6 +63,18 @@ const getIdByUsername = (username) => {
   });
   return targetUser;
 };
+
+/* GET SOCKET ID WITH USERNAME, USED FOR SENDING NOTIFICATION TO SEPCIFIC USERNAME USING THEIR SOCKET ID */
+const getIdByUsernameRoom = (username, room) => {
+  let targetUser = "";
+  usersInRoom.forEach((user) => {
+    if (user.username === username && user.room === room) {
+      targetUser = user;
+    }
+  });
+  return targetUser;
+};
+
 module.exports = {
   addUser,
   removeUser,
@@ -70,5 +82,6 @@ module.exports = {
   addUserAll,
   removeUserAll,
   getUsersInRoom,
+  getIdByUsernameRoom,
   getIdByUsername,
 };

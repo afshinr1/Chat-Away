@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
         margin : '10px'
     },
 
-  /* ADdUser Modal Styles */
+  /* KickUser  Modal Styles */
   modalBox: {
     [theme.breakpoints.down("sm")]: {
       width: "80vw",
@@ -51,7 +51,7 @@ export const useStyles = makeStyles((theme) => ({
     top: 0,
   },
 
-  /* End Of AddUser Modal Styles */
+  /* End Of KickUser Modal Styles */
 }));
 
 
