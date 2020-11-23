@@ -9,11 +9,13 @@ import thunk from "redux-thunk";
 import { combineReducers, applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
 import { AuthReducer } from "./reducers/AuthReducer";
+import { MyFriendsReducer } from "./reducers/MyFriendsReducer";
 import { MyRoomsReducer} from './reducers/MyRoomsReducer';
 import {RequestsReducer} from './reducers/RequestsReducer';
 
 const rootReducer = combineReducers({
   AuthReducer: AuthReducer,
+  MyFriendsReducer : MyFriendsReducer, 
   MyRoomsReducer : MyRoomsReducer,
   RequestsReducer : RequestsReducer
 });
