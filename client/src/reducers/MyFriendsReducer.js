@@ -14,7 +14,7 @@ export const MyFriendsReducer = (state = initialState, action) => {
         friendList: [action.payload, ...state.friendList],
       };
     case "REMOVE_FRIEND":
-      const updatedFriendList = [...state.friendList].filter(x => x.id != action.payload.id);
+      const updatedFriendList = [...state.friendList].filter(x => x.id !== action.payload.id);
       return {
         ...state,
         friendList: updatedFriendList

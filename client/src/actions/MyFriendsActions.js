@@ -1,4 +1,4 @@
-/* Set global state for my rooms */
+/* Set global state for friends */
 export const setFriends = (friends) => {
     return { type: "SET_FRIENDS", payload: friends };
 };

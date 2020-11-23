@@ -31,7 +31,7 @@ function Home() {
   }
 
   const toggleTabs = (
-    <Tabs value={ showFriends ? 0 : 1 } onChange={handleChange} aria-label="simple tabs example">
+    <Tabs value={ showFriends ? 0 : 1 } onChange={handleChange} >
       <Tab label="Friends" />
       <Tab label="Requests" />
     </Tabs>

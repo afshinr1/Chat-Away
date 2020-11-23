@@ -11,7 +11,7 @@ function Login(props) {
   const [message, setMessage] = useState("");
   const classes = useStyles();
 
-    /* Handles validating the user with google login. Set user in storage and go to app */
+    /* Handles validating the user with google login. Set user in sessionStorage and go to app */
   const responseGoogle = (response) => {
     const user = {
       email: response.profileObj.email,
@@ -26,7 +26,7 @@ function Login(props) {
     history.push("/");
   };
 
-  /* Handles validating the user with username and password. If user exists, login. else give message */
+  /* Handles validating the user with username and password. If user exists, login and set user in sessionStorage. else give message */
   const handleValidate = (username, password) => {
     axios
       .post(API.SIGNIN, {

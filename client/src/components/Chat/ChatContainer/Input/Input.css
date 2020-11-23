@@ -16,4 +16,17 @@
   .message-button {
     flex: 0.1;
   }
-  
+
+  .emoji-picker {
+    position: relative;
+  }
+.picker {
+  position: absolute;
+  display: none;
+  top: -700%;
+  left : 0;
+}
+
+.show {
+  display: block;
+}

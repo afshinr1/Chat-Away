@@ -1,7 +1,7 @@
 import { Box, IconButton, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import AddUserModal from "./AddUser/AddUserModal";
-import WarningIcon from '@material-ui/icons/Warning';
+import WarningIcon from "@material-ui/icons/Warning";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import { LeaveButton, useStyles } from "./Styles";
@@ -33,6 +33,7 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
   };
   return (
     <Box component="div" className={classes.misc_container}>
+      {/* INVITE USER BUTTON */}
       <IconButton
         size="medium"
         className={classes.addBtn}
@@ -43,7 +44,7 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
         <GroupAddIcon className={classes.addIcon} />
       </IconButton>
 
-      {/* TODO */}
+      {/* KICK USER BUTTON */}
       <IconButton
         disabled={username === host ? false : true}
         size="medium"
@@ -55,7 +56,8 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
         <RemoveCircleIcon className={classes.addIcon} />
       </IconButton>
 
-      <LeaveButton startIcon={  <WarningIcon />} variant='outlined'>
+      {/* TODO, LEAVE ROOM PERMANENTLY */}
+      <LeaveButton startIcon={<WarningIcon />} variant="outlined">
         Leave
       </LeaveButton>
 

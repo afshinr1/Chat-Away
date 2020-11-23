@@ -1,15 +1,30 @@
 import React, { useState } from "react";
 import "./Input.css";
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, IconButton } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import DrawModal from "./DrawModal";
+import Picker from "emoji-picker-react";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
+import { useStyles } from "./Styles";
 
 /* INPUT BAR TO SEND MESSAGES */
 function Input({ handleMessage }) {
+  const classes = useStyles();
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
+  const [openEmoji, setOpenEmoji] = useState(false);
 
+  /* HANDLE PICKING AN EMOJI/EMOJI CLICK */
+  const onEmojiClick = (event, emojiObject) => {
+    setMessage((oldMsg) => oldMsg + emojiObject.emoji);
+  };
+  /* HANDLE SHOW EMOJI PICKER */
+  const handleEmojiShow = (e) => {
+    setOpenEmoji(!openEmoji);
+  };
+
+  /* SEND MESSAGE TO SERVER */
   const sendMessage = () => {
     if (message !== "") {
       let msgObj = { type: "text", text: message };
@@ -17,6 +32,8 @@ function Input({ handleMessage }) {
       setMessage("");
     }
   };
+
+  /* SEND IMAGE TO SERVER */
   const handleImage = (image) => {
     let msgObj = { type: "image", text: image };
     handleMessage(msgObj);
@@ -45,6 +62,16 @@ function Input({ handleMessage }) {
         className="message-input"
         onKeyDown={handleEnter}
       />
+
+      {/* RENDER EMOJI PICKER */}
+      <div className="emoji-picker">
+        <IconButton className={classes.emojiBtn} onClick={handleEmojiShow}>
+          <EmojiEmotionsIcon />
+        </IconButton>
+        <div className={`picker ${openEmoji && "show"}`}>
+          <Picker onEmojiClick={onEmojiClick} />
+        </div>
+      </div>
 
       {/* OPEN DRAWING MODAL TO SEND DRAWINGS */}
       <Button
