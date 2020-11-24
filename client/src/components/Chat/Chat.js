@@ -27,8 +27,6 @@ function Chat() {
   const roomObj = { roomType: type, host, roomName, uuid: room };
 
   useEffect(() => {
-    // console.log(room);
-    // console.log(username);
 
     /* ON CLICKING ON A ROOM, JOIN THE ROOM BY EMITING TO SERVER JOIN EVENT WITH USERNAME AND ROOM UUID*/
     socket.emit("join", { username, room }, (error) => {
@@ -54,7 +52,7 @@ function Chat() {
     });
 
     /* GOT KICKED, LEAVE ROOM */
-    socket.on("got kicked", (obj) => {
+    socket.once("got kicked", (obj) => {
       history.push("/");
       toast.error("Got Kicked From The Room!", {
         position: "top-center",

@@ -12,7 +12,6 @@ import { history } from "../Utilities/History";
 /* NAVBAR. NEED TO CHANGE STUFF AS NEEDED */
 export default function Navbar() {
   const user = JSON.parse(sessionStorage.getItem("user"));
-  console.log(user);
   const classes = useStyles();
 
   const handleLogout = () => {

@@ -10,7 +10,7 @@ import { IconButton } from "@material-ui/core";
 import { useStyles } from "./RequestStyles";
 
 /* REQUEST CARD COMPONENT. (PRIMARILY USED FOR ROOMS)*/
-export default function RequestCard({ data, handleAdd, handleCancel }) {
+export default function RoomRequestCard({ data, handleAdd, handleCancel }) {
   const classes = useStyles();
 
   return (

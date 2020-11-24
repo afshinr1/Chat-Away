@@ -9,9 +9,9 @@ import {
 import { toast } from "react-toastify";
 import { useStyles, getModalStyle, AddUserTextField } from "./AddUserStyles";
 import CloseIcon from "@material-ui/icons/Close";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { socket } from "../../../Utilities/API";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import { v4 as uuidv4 } from "uuid";
 
 /* INVITE USER TO A ROOM MODAL COMPONENT */
@@ -29,43 +29,48 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
     }
   };
 
-  useEffect(() => {
-    /* RECIEVE ERROR FROM SERVER IF INVITED USER CURRENTLY IS NOT ONLINE */
-    socket.on("add user error", () => {
-      toast.warning("User currently not online!", {
-        position: "top-center",
-      });
-    });
-
-    /* RECIEVE ERROR FROM SERVER IF INVITED USER IS YOURSELF */
-    socket.on("add user same username", () => {
-      toast.info("You cannot request to add yourself!", {
-        position: "top-center",
-      });
-    });
-
-    /* RECIEVE SUCCESS MESSAGE FROM SERVER IF INVITED WAS INVITED SUCCESSFULLY*/
-    socket.on("add user success", () => {
-      toast.success("Successfully requested user!", {
-        position: "top-center",
-      });
-    });
-  }, []);
-
   /* SEND INVITATION TO USER WITH {user = username}. SEND ROOM DATA TO USER REQUESTED*/
   const handleAddUser = (e) => {
     let newInput = input.trim();
     const requestId = uuidv4();
-    const msg = { requestId, user: newInput, roomObj, requestedBy: username };
+    const msg = {
+      requestId,
+      user: newInput,
+      roomObj,
+      requestedBy: username,
+      type: "room",
+    };
     if (newInput) {
-      socket.emit("add user to room", msg);
+      socket.emit("add user to room", msg, (response) => {
+        /* SERVER RESPONSE */
+
+        /* RECIEVE ERROR FROM SERVER IF INVITED USER CURRENTLY IS NOT ONLINE */
+        if (response.includes("error")) {
+          toast.warning("User currently not online!", {
+            position: "top-center",
+          });
+        }
+
+        /* RECIEVE ERROR FROM SERVER IF INVITED USER IS YOURSELF */
+        if (response.includes("same")) {
+          toast.info("You cannot request to add yourself!", {
+            position: "top-center",
+          });
+        }
+
+        /* RECIEVE SUCCESS MESSAGE FROM SERVER IF INVITED WAS INVITED SUCCESSFULLY*/
+        if (response.includes("success")) {
+          toast.success("Successfully requested user!", {
+            position: "top-center",
+          });
+        }
+      });
     } else {
       toast.warning("Please enter a valid username", {
         position: "top-center",
       });
     }
-    setInput('');
-
+    setInput("");
   };
 
   return (
@@ -94,7 +99,7 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
             color="primary"
             onClick={handleAddUser}
             variant="contained"
-            startIcon ={<AddIcon />}
+            startIcon={<AddIcon />}
           >
             Add
           </Button>

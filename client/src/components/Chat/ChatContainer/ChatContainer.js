@@ -13,7 +13,7 @@ function ChatContainer({ username }) {
     let unmounted = false;
 
     socket.on("message", (message) => {
-      console.log(message);
+     // console.log(message);
       if (!unmounted) {
         setMessages((messages) => [...messages, message]);
       }

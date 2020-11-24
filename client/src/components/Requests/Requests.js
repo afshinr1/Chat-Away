@@ -1,10 +1,10 @@
 import { Badge, Box, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { socket } from "../Utilities/API";
 import MailIcon from "@material-ui/icons/Mail";
 import { useSelector, useDispatch } from "react-redux";
-import { addRequest, removeRequest } from "../../actions/RequestsActions";
-import RequestCard from "./RequestCard";
+import { removeRequest } from "../../actions/RequestsActions";
+import RoomRequestCard from "./RoomRequestCard";
 import { toast } from "react-toastify";
 import { useStyles } from "./RequestStyles";
 import { addRoom } from "../../actions/MyRoomsActions";
@@ -17,14 +17,6 @@ function Requests() {
   const myRooms = useSelector((state) => state.MyRoomsReducer.roomList);
   const myRoomNames = myRooms.map((room) => room.roomName);
   const requestsNum = requests.length;
-
-  useEffect(() => {
-    socket.on("room request", (obj) => {
-      dispatch(addRequest(obj));
-      toast.dark("New notification request!");
-      console.log(obj);
-    });
-  }, [dispatch]);
 
   /*  HANDLE ADDING ROOM FOR THE USER */
   const handleAdd = (data) => {
@@ -64,14 +56,18 @@ function Requests() {
   /* CREATE A REQUEST LIST TO RENDER, USING REQUEST CARD COMPONENT, ELSE RENDER NO REQUESTS */
   let requestList;
   if (requests.length > 0) {
-    requestList = requests.map((request, index) => (
-      <RequestCard
-        key={index}
-        data={request}
-        handleAdd={handleAdd}
-        handleCancel={handleCancel}
-      />
-    ));
+    requestList = requests.map((request, index) => {
+      if (request.type === "room") {
+        return (
+          <RoomRequestCard
+            key={index}
+            data={request}
+            handleAdd={handleAdd}
+            handleCancel={handleCancel}
+          />
+        );
+      } else return <h1>friend request card</h1>;
+    });
   } else {
     requestList = (
       <Typography className={classes.noRequests}>No Requests!</Typography>

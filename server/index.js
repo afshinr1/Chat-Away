@@ -51,22 +51,22 @@ io.on("connection", (socket) => {
   /* ROOMS */
 
   /* Get all rooms for a user */
-  socket.on("get myRooms", (username) => {
+  socket.on("get myRooms", (username, callback) => {
     console.log("in get rooms for user : " + username);
     let result = getMyRoomsController(username);
     result.then((myRooms) => {
-      socket.emit("my rooms data", myRooms);
+      callback(myRooms);
     });
   });
 
   /* Create a room with a username */
-  socket.on("create room", (obj) => {
+  socket.on("create room", (obj, callback) => {
     const { roomName, roomType, username } = obj;
     let result = createRoomController(roomName, roomType, username);
     console.log("create room ");
     result.then((res) => {
-    //  console.log(res);
-      socket.emit("create room response", res);
+      //  console.log(res);
+      callback(res);
     });
   });
 
@@ -81,12 +81,12 @@ io.on("connection", (socket) => {
   });
 
   /* Get all public rooms */
-  socket.on("get public rooms", () => {
+  socket.on("get public rooms", (callback) => {
     let result = getPublicRoomsController();
     console.log("Get public roosm ");
     result.then((publicRooms) => {
       console.log(publicRooms);
-      socket.emit("public room data", publicRooms);
+      callback(publicRooms);
     });
   });
   /* END OF ROOMS */
@@ -149,7 +149,7 @@ io.on("connection", (socket) => {
   });
 
   /* REQUEST TO ADD USER TO ROOM. SEND NOTIFICATION TO TARGET USER IF ONLINE/EXISTS IN ALLUSRES ONLINE */
-  socket.on("add user to room", (obj) => {
+  socket.on("add user to room", (obj, callback) => {
     console.log(obj);
     const { user, roomObj, requestedBy } = obj;
     let targetUser = getIdByUsername(user);
@@ -157,37 +157,35 @@ io.on("connection", (socket) => {
       let targetId = targetUser.id;
       let targetUsername = targetUser.username;
       if (targetUsername === requestedBy) {
-        socket.emit("add user same username");
+        callback("add user same username");
       } else {
-        socket.emit("add user success");
+        callback("add user success");
         io.to(targetId).emit("room request", obj);
       }
     } else {
-      socket.emit("add user error");
+      callback("add user error");
     }
   });
 
   /* REQUEST TO KICK A USER FROM ROOM. SEND NOTIFICATION TO TARGET USER IF THEYRE IN ROOM AND SEND NEW ROOM DATA */
-socket.on('kick user from room', obj => {
-  console.log('in kick user');
-  const { username, roomObj, requestedBy } = obj;
-  let targetUser = getIdByUsernameRoom(username, roomObj.uuid);
-  console.log(targetUser);
-  if (targetUser !== "") {
-    let targetId = targetUser.id;
-    let targetUsername = targetUser.username;
-    if (targetUsername === requestedBy) {
-      socket.emit("kick user same username");
+  socket.on("kick user from room", (obj, callback) => {
+    console.log("in kick user");
+    const { username, roomObj, requestedBy } = obj;
+    let targetUser = getIdByUsernameRoom(username, roomObj.uuid);
+    console.log(targetUser);
+    if (targetUser !== "") {
+      let targetId = targetUser.id;
+      let targetUsername = targetUser.username;
+      if (targetUsername === requestedBy) {
+        callback("kick user same username");
+      } else {
+        callback("kick user success");
+        io.to(targetId).emit("got kicked", obj);
+      }
     } else {
-      socket.emit("kick user success");
-      io.to(targetId).emit("got kicked", obj);
-   }
-  } else {
-    socket.emit("kick user error");
-  }
-
-
-})
+      callback("kick user error");
+    }
+  });
 
   /* END OF CHAT DATA */
 

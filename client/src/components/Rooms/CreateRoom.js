@@ -14,7 +14,7 @@ import {
 import { toast } from "react-toastify";
 import CloseIcon from "@material-ui/icons/Close";
 import { useStyles, getModalStyle } from "./RoomsStyles";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CssTextField } from "./RoomsStyles";
 import { socket } from "../Utilities/API";
 import { useDispatch } from "react-redux";
@@ -33,14 +33,9 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
   /* EMIT EVENT TO SERVER TO CREATE A ROOM WITH ROOM NAME,ROOM TYPE AND USERNAME */
   const handleAddRoom = (e) => {
     e.preventDefault();
-    socket.emit("create room", { roomName, roomType, username });
-    setRoomName("");
-    setRoomType(null);
-  };
+    socket.emit("create room", { roomName, roomType, username }, (response) => {
+      /* GET RESPONSE TO CREATE ROOM FROM SERVER */
 
-  useEffect(() => {
-    /* GET RESPONSE TO CREATE ROOM FROM SERVER */
-    socket.on("create room response", (response) => {
       const { newRoom, message } = response;
 
       /* IF ROOM NAME ALREADY EXISTS, SHOW ERROR*/
@@ -61,9 +56,11 @@ function CreateRoom({ openRoomModal, handleModalClose, setRoomList }) {
         });
       }
     });
-  }, [setRoomList, dispatch]);
-  return (
+    setRoomName("");
+    setRoomType(null);
+  };
 
+  return (
     /* MAIN MODAL */
     <Modal
       closeAfterTransition

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { useStyles, getModalStyle, AddUserTextField } from "./KickUserStyles";
 import CloseIcon from "@material-ui/icons/Close";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { socket } from "../../../Utilities/API";
 
 /* INVITE USER TO A ROOM MODAL COMPONENT */
@@ -28,35 +28,36 @@ function KickUserModal({ openKickUserModal, handleModalClose, roomObj }) {
     }
   };
 
-  useEffect(() => {
-    /* RECIEVE ERROR FROM SERVER IF KICKED USER CURRENTLY IS NOT IN ROOM */
-    socket.on("kick user error", () => {
-      toast.warning("User currently not in room!!", {
-        position: "top-center",
-      });
-    });
-
-    /* RECIEVE ERROR FROM SERVER IF KICKED USER IS YOURSELF */
-    socket.on("kick user same username", () => {
-      toast.info("You cannot kick yourself!", {
-        position: "top-center",
-      });
-    });
-
-    /* RECIEVE SUCCESS MESSAGE FROM SERVER IF KICKED SUCCESSFULLY*/
-    socket.on("kick user success", () => {
-      toast.success("Successfully kicked user!", {
-        position: "top-center",
-      });
-    });
-  }, []);
 
   /* HANDLE KICKING USER FROM THE ROOM */
   const handleKickUser = (e) => {
     let newInput = input.trim();
     const msg = { username: newInput, roomObj, requestedBy: username };
     if (newInput) {
-      socket.emit("kick user from room", msg);
+      socket.emit("kick user from room", msg, (response) => {
+        /* SERVER RESPONSE */
+
+        /* RECIEVE ERROR FROM SERVER IF KICKED USER CURRENTLY IS NOT IN ROOM */
+        if (response.includes("error")) {
+          toast.warning("User currently not in room!!", {
+            position: "top-center",
+          });
+        }
+
+        /* RECIEVE ERROR FROM SERVER IF KICKED USER IS YOURSELF */
+        if (response.includes("same")) {
+          toast.info("You cannot kick yourself!", {
+            position: "top-center",
+          });
+        }
+
+        /* RECIEVE SUCCESS MESSAGE FROM SERVER IF KICKED SUCCESSFULLY*/
+        if (response.includes("success")) {
+          toast.success("Successfully kicked user!", {
+            position: "top-center",
+          });
+        }
+      });
     } else {
       toast.warning("Please enter a valid username", {
         position: "top-center",

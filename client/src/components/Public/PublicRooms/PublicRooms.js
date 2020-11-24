@@ -33,13 +33,13 @@ const PublicRooms = () => {
 
   useEffect(() => {
     let unmounted = false;
-    socket.emit("get public rooms");
-
-    socket.on("public room data", (data) => {
+    socket.emit("get public rooms", data => {
       if (!unmounted) {
         setPublicRooms(data);
       }
     });
+
+
     return () => {
       unmounted = true;
     };
