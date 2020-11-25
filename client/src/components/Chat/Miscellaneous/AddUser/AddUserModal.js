@@ -6,7 +6,7 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
-import { toast } from "react-toastify";
+import { Flip, toast } from "react-toastify";
 import { useStyles, getModalStyle, AddUserTextField } from "./AddUserStyles";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useState } from "react";
@@ -48,6 +48,8 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
         if (response.includes("error")) {
           toast.warning("User currently not online!", {
             position: "top-center",
+            transition: Flip,
+
           });
         }
 
@@ -55,6 +57,8 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
         if (response.includes("same")) {
           toast.info("You cannot request to add yourself!", {
             position: "top-center",
+            transition: Flip,
+
           });
         }
 
@@ -62,12 +66,16 @@ function AddUserModal({ openAddUserModal, handleModalClose, roomObj }) {
         if (response.includes("success")) {
           toast.success("Successfully requested user!", {
             position: "top-center",
+            transition: Flip,
+
           });
         }
       });
     } else {
       toast.warning("Please enter a valid username", {
         position: "top-center",
+        transition: Flip,
+
       });
     }
     setInput("");

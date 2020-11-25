@@ -49,14 +49,24 @@ const joinRoom = (room_uuid, username) => {
   });
 };
 
-
 /* Get all public rooms from database */
 const getPublicRooms = () => {
   return new Promise((resolve, reject) => {
-    let query =
-      "SELECT * FROM rooms WHERE roomType=?";
-    connection.query(query, ['public'], (error, results, field) => {
+    let query = "SELECT * FROM rooms WHERE roomType=?";
+    connection.query(query, ["public"], (error, results, field) => {
       resolve(results);
+    });
+  });
+};
+
+/* Leave room */
+const leaveRoom = (room_uuid, username) => {
+  return new Promise((resolve, reject) => {
+    let query = "DELETE FROM joined WHERE room_uuid=? AND username = ?";
+    connection.query(query, [room_uuid, username], (error, results, field) => {
+      if (error) reject("Error in leave room");
+
+      resolve("Successfully left room");
     });
   });
 };
@@ -65,3 +75,4 @@ module.exports.createRoom = createRoom;
 module.exports.joinRoom = joinRoom;
 module.exports.getMyRooms = getMyRooms;
 module.exports.getPublicRooms = getPublicRooms;
+module.exports.leaveRoom = leaveRoom;

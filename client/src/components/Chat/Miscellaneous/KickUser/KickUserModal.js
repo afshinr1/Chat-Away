@@ -6,7 +6,7 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
-import { toast } from "react-toastify";
+import { toast, Zoom } from "react-toastify";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { useStyles, getModalStyle, AddUserTextField } from "./KickUserStyles";
 import CloseIcon from "@material-ui/icons/Close";
@@ -41,6 +41,7 @@ function KickUserModal({ openKickUserModal, handleModalClose, roomObj }) {
         if (response.includes("error")) {
           toast.warning("User currently not in room!!", {
             position: "top-center",
+            transition: Zoom
           });
         }
 
@@ -48,6 +49,8 @@ function KickUserModal({ openKickUserModal, handleModalClose, roomObj }) {
         if (response.includes("same")) {
           toast.info("You cannot kick yourself!", {
             position: "top-center",
+            transition: Zoom
+
           });
         }
 
@@ -55,12 +58,16 @@ function KickUserModal({ openKickUserModal, handleModalClose, roomObj }) {
         if (response.includes("success")) {
           toast.success("Successfully kicked user!", {
             position: "top-center",
+            transition: Zoom
+
           });
         }
       });
     } else {
       toast.warning("Please enter a valid username", {
         position: "top-center",
+        transition: Zoom
+
       });
     }
     setInput("");

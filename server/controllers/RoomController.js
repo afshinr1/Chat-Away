@@ -1,5 +1,6 @@
+const { response } = require("express");
 const { v4: uuidv4 } = require("uuid");
-const { createRoom, joinRoom, getMyRooms, getPublicRooms } = require("../models/roomsModel");
+const { createRoom, joinRoom, getMyRooms, getPublicRooms, leaveRoom } = require("../models/roomsModel");
 
 /* Create a room controller. Creates unique uuid for new room, and requests database to add room */
 const createRoomController = async (roomName, roomType, username) => {
@@ -32,11 +33,16 @@ const getPublicRoomsController = async () => {
     const publicRooms = await getPublicRooms();
     return publicRooms;
   
-
 };
+
+const leaveRoomController = async (room_uuid, username) => {
+  const response = await leaveRoom(room_uuid, username);
+  return response;
+}
 
 module.exports = {
   createRoomController,
+  leaveRoomController,
   getMyRoomsController,
   joinRoomController,
   getPublicRoomsController,

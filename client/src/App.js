@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Chat from "./components/Chat/Chat";
 import Profile from "./components/Profile/Profile";
+import { CssBaseline } from "@material-ui/core";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -59,6 +60,8 @@ function App() {
         </Switch>
         <ToastContainer />
       </div>
+      <CssBaseline />
+
     </Router>
   );
 }

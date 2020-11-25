@@ -18,6 +18,7 @@ const {
   getPublicRoomsController,
   joinRoomController,
   getMyRoomsController,
+  leaveRoomController,
 } = require("./controllers/RoomController");
 const { createMessage } = require("./utilities/Messages");
 const { create } = require("domain");
@@ -54,9 +55,11 @@ io.on("connection", (socket) => {
   socket.on("get myRooms", (username, callback) => {
     console.log("in get rooms for user : " + username);
     let result = getMyRoomsController(username);
-    result.then((myRooms) => {
-      callback(myRooms);
-    });
+    result
+      .then((myRooms) => {
+        callback(myRooms);
+      })
+      .catch((err) => console.error(err));
   });
 
   /* Create a room with a username */
@@ -64,10 +67,12 @@ io.on("connection", (socket) => {
     const { roomName, roomType, username } = obj;
     let result = createRoomController(roomName, roomType, username);
     console.log("create room ");
-    result.then((res) => {
-      //  console.log(res);
-      callback(res);
-    });
+    result
+      .then((res) => {
+        //  console.log(res);
+        callback(res);
+      })
+      .catch((err) => console.error(err));
   });
 
   /* Join new room */
@@ -75,19 +80,23 @@ io.on("connection", (socket) => {
     const { room_uuid, username } = data;
     console.log("Joining room " + room_uuid + " by " + username);
     const response = joinRoomController(room_uuid, username);
-    response.then((res) => {
-      socket.emit(res);
-    });
+    response
+      .then((res) => {
+        socket.emit(res);
+      })
+      .catch((err) => console.error(err));
   });
 
   /* Get all public rooms */
   socket.on("get public rooms", (callback) => {
     let result = getPublicRoomsController();
     console.log("Get public roosm ");
-    result.then((publicRooms) => {
-      console.log(publicRooms);
-      callback(publicRooms);
-    });
+    result
+      .then((publicRooms) => {
+        console.log(publicRooms);
+        callback(publicRooms);
+      })
+      .catch((err) => console.error(err));
   });
   /* END OF ROOMS */
 
@@ -185,6 +194,17 @@ io.on("connection", (socket) => {
     } else {
       callback("kick user error");
     }
+  });
+
+  /* PERMANENTLY LEAVE A ROOM */
+  socket.on("withdraw room", (msg, callback) => {
+    const { room_uuid, username } = msg;
+    let result = leaveRoomController(room_uuid, username);
+    result
+      .then((response) => {
+        callback(response);
+      })
+      .catch((err) => console.error(err));
   });
 
   /* END OF CHAT DATA */

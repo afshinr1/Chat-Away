@@ -5,6 +5,7 @@ import WarningIcon from "@material-ui/icons/Warning";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import { LeaveButton, useStyles } from "./Styles";
+import LeaveRoom from './LeaveRoom/LeaveRoom'
 import KickUserModal from "./KickUser/KickUserModal";
 
 /* COMPONENT FOR CONTAINER OF ADD USER AND KICK USER */
@@ -13,6 +14,7 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
 
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
   const [openKickUserModal, setOpenKickUserModal] = useState(false);
+  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
 
   const classes = useStyles();
 
@@ -26,10 +28,11 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
     setOpenKickUserModal(true);
   };
 
-  /* CLOSE ADD USER MODAL */
+  /* CLOSE ALL MODALS */
   const handleModalClose = (e) => {
     setOpenAddUserModal(false);
     setOpenKickUserModal(false);
+    setLeaveDialogOpen(false);
   };
   return (
     <Box component="div" className={classes.misc_container}>
@@ -57,7 +60,7 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
       </IconButton>
 
       {/* TODO, LEAVE ROOM PERMANENTLY */}
-      <LeaveButton startIcon={<WarningIcon />} variant="outlined">
+      <LeaveButton startIcon={<WarningIcon />} onClick={e => setLeaveDialogOpen(true)} variant="outlined">
         Leave
       </LeaveButton>
 
@@ -66,6 +69,12 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
         openAddUserModal={openAddUserModal}
         roomObj={roomObj}
       />
+
+      <LeaveRoom
+      leaveDialogOpen={leaveDialogOpen} 
+      handleModalClose={handleModalClose}
+      roomObj={roomObj} 
+      username={username} />
 
       <KickUserModal
         handleModalClose={handleModalClose}

@@ -5,13 +5,14 @@ import Meet from "../Meet/Meet";
 import Navbar from "../Navbar/Navbar";
 import Rooms from "../Rooms/Rooms";
 import { useStyles } from "./HomeStyles";
+
 import { socket } from "../Utilities/API";
 import Requests from "../Requests/Requests";
 import FriendList from "../FriendList/FriendList";
 import { useDispatch } from "react-redux";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { toast } from "react-toastify";
+import { Flip, toast } from "react-toastify";
 import { addRequest } from "../../actions/RequestsActions";
 
 /* MAIN PAGE. RENDER ALL 4 COLUMNS */
@@ -30,10 +31,13 @@ function Home() {
 
   /* ON A NEW ROOM REQUEST, ADD REQUEST TO REQUEST LIST */
   useEffect(() => {
-    socket.on("room request", (obj) => {      
+    socket.on("room request", (obj) => {
+      // console.log(obj)
+      toast.dark("New notification request!", {
+        toastId: obj.requestId,
+        transition: Flip,
+      });
       dispatch(addRequest(obj));
-      toast.dark("New notification request!");
-      console.log(obj);
     });
   }, [dispatch]);
 
