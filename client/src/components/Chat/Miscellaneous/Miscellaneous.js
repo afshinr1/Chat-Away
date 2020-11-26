@@ -5,7 +5,7 @@ import WarningIcon from "@material-ui/icons/Warning";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import { LeaveButton, useStyles } from "./Styles";
-import LeaveRoom from './LeaveRoom/LeaveRoom'
+import LeaveRoom from "./LeaveRoom/LeaveRoom";
 import KickUserModal from "./KickUser/KickUserModal";
 
 /* COMPONENT FOR CONTAINER OF ADD USER AND KICK USER */
@@ -59,8 +59,11 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
         <RemoveCircleIcon className={classes.addIcon} />
       </IconButton>
 
-      {/* TODO, LEAVE ROOM PERMANENTLY */}
-      <LeaveButton startIcon={<WarningIcon />} onClick={e => setLeaveDialogOpen(true)} variant="outlined">
+      <LeaveButton
+        startIcon={<WarningIcon />}
+        onClick={(e) => setLeaveDialogOpen(true)}
+        variant="outlined"
+      >
         Leave
       </LeaveButton>
 
@@ -71,10 +74,11 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
       />
 
       <LeaveRoom
-      leaveDialogOpen={leaveDialogOpen} 
-      handleModalClose={handleModalClose}
-      roomObj={roomObj} 
-      username={username} />
+        leaveDialogOpen={leaveDialogOpen}
+        handleModalClose={handleModalClose}
+        roomObj={roomObj}
+        username={username}
+      />
 
       <KickUserModal
         handleModalClose={handleModalClose}

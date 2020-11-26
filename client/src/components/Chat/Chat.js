@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Box, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -11,7 +11,7 @@ import { socket } from "../Utilities/API";
 import RoomInfo from "./RoomInfo/RoomInfo";
 import Miscellaneous from "./Miscellaneous/Miscellaneous";
 import { toast } from "react-toastify";
-
+import MobileView from "./MobileView";
 /* MAIN CHAT WINDOW */
 function Chat() {
   const location = useLocation();
@@ -27,7 +27,6 @@ function Chat() {
   const roomObj = { roomType: type, host, roomName, uuid: room };
 
   useEffect(() => {
-
     /* ON CLICKING ON A ROOM, JOIN THE ROOM BY EMITING TO SERVER JOIN EVENT WITH USERNAME AND ROOM UUID*/
     socket.emit("join", { username, room }, (error) => {
       if (error) {
@@ -70,7 +69,12 @@ function Chat() {
       <Navbar />
 
       {/* Go back Button and Room name display */}
-      <Box component="div" display="flex" alignItems="center">
+      <Box component="div" className={classes.mainHeader}>
+        {/*  SHOW MOBILE MENU WHEN SCREEN SIZE GETS SMALL */}
+        <Hidden mdUp>
+          <MobileView roomObj={roomObj} host={host} onlineUsers={onlineUsers} />
+        </Hidden>
+
         <BackButton
           onClick={(e) => history.goBack()}
           variant="outlined"
@@ -88,23 +92,27 @@ function Chat() {
 
       <Grid container className={classes.innerContainer}>
         {/*COL 1:  ADD NEW PESRON/ KICK PERSON FROM ROOM? */}
-        <Grid item xs={2} className={classes.col1}>
-          <Miscellaneous
-            onlineUsers={onlineUsers}
-            host={host}
-            roomObj={roomObj}
-          />
-        </Grid>
+        <Hidden smDown>
+          <Grid item xs={2} className={classes.col1}>
+            <Miscellaneous
+              onlineUsers={onlineUsers}
+              host={host}
+              roomObj={roomObj}
+            />
+          </Grid>
+        </Hidden>
 
         {/*COL 2:  CHAT AREA. SEND AND RECIEVE MESSAGES*/}
-        <Grid item xs={8} className={classes.col2}>
+        <Grid item xs={12} md={8} className={classes.col2}>
           <ChatContainer username={username} />
         </Grid>
 
         {/*COL 3:  RENDER ALL PEOPLE IN ROOM?*/}
-        <Grid item xs={2} className={classes.col3}>
-          <RoomInfo onlineUsers={onlineUsers} username={username} />
-        </Grid>
+        <Hidden smDown>
+          <Grid item xs={2} className={classes.col3}>
+            <RoomInfo onlineUsers={onlineUsers} username={username} />
+          </Grid>
+        </Hidden>
       </Grid>
     </Box>
   );

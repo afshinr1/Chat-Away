@@ -33,7 +33,6 @@ function Home() {
   useEffect(() => {
     /* ON A NEW ROOM REQUEST, ADD REQUEST TO REQUEST LIST */
     socket.on("room request", (obj) => {
-      // console.log(obj)
       toast.dark("New notification request!", {
         toastId: obj.requestId,
         transition: Flip,

@@ -36,8 +36,6 @@ function Requests() {
       dispatch(addRoom(roomObj));
       toast.success("Joined Successfully", {
         position: "top-center",
-        autoClose: 5000,
-        draggable: true,
       });
     }
 

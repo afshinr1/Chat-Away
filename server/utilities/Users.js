@@ -64,7 +64,7 @@ const getIdByUsername = (username) => {
   return targetUser;
 };
 
-/* GET SOCKET ID WITH USERNAME, USED FOR SENDING NOTIFICATION TO SEPCIFIC USERNAME USING THEIR SOCKET ID */
+/* GET SOCKET ID WITH USERNAME, USED KICKING SOMEONE FROM ROOM USING THEIR SOCKET ID */
 const getIdByUsernameRoom = (username, room) => {
   let targetUser = "";
   usersInRoom.forEach((user) => {

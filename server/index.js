@@ -131,8 +131,10 @@ io.on("connection", (socket) => {
       let targetId = friend;
       callback("OK");
       const targetUser = getIdByUsername(friend);
+      console.log('target friend user');
+      console.log(friend);
       if (targetUser !== "") {
-        io.to(targetId).emit("friend request", username);
+        io.to(targetUser.id).emit("friend request", username);
       }
     } else {
       callback("friend already exists");
