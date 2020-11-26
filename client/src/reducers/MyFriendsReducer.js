@@ -6,7 +6,7 @@ export const MyFriendsReducer = (state = initialState, action) => {
     case "SET_FRIENDS":
       return {
         ...state,
-        friendList: [...action.payload],
+        friendList: action.payload,
       };
     case "ADD_FRIEND":
       return {

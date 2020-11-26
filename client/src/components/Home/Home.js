@@ -14,6 +14,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { Flip, toast } from "react-toastify";
 import { addRequest } from "../../actions/RequestsActions";
+import { addFriend } from "../../actions/MyFriendsActions";
 
 /* MAIN PAGE. RENDER ALL 4 COLUMNS */
 
@@ -29,8 +30,8 @@ function Home() {
     socket.emit("connection", username);
   }, [username]);
 
-  /* ON A NEW ROOM REQUEST, ADD REQUEST TO REQUEST LIST */
   useEffect(() => {
+    /* ON A NEW ROOM REQUEST, ADD REQUEST TO REQUEST LIST */
     socket.on("room request", (obj) => {
       // console.log(obj)
       toast.dark("New notification request!", {
@@ -39,6 +40,25 @@ function Home() {
       });
       dispatch(addRequest(obj));
     });
+
+    /* ON A FRIEND REQUEST BEING RECEIVED, ADD FRIEND REQUEST TO REQUEST LIST */
+    socket.on("friend request", (username) => {
+      toast.dark("New friend request from " + username, {
+        toastId: username,
+        transition: Flip,
+      });
+      // TODO: create dispatch(addFriendRequest(obj));
+    });
+
+    /* ON A FRIEND REQUEST BEING ACCEPTED, ADD FRIEND TO FRIEND LIST */
+    socket.on("friend request accepted", (friend) => {
+      toast.dark(`${friend.username} accepted your friend request!`, {
+        toastId: friend.username,
+        transition: Flip,
+      });
+      dispatch(addFriend(friend));
+    });
+
   }, [dispatch]);
 
   const handleChange = (event, value) => {

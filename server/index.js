@@ -20,6 +20,11 @@ const {
   getMyRoomsController,
   leaveRoomController,
 } = require("./controllers/RoomController");
+const {
+  getFriendsController,
+  addFriendController,
+  removeFriendController,
+} = require("./controllers/FriendController");
 const { createMessage } = require("./utilities/Messages");
 const { create } = require("domain");
 const PORT = process.env.PORT || 5000;
@@ -99,6 +104,71 @@ io.on("connection", (socket) => {
       .catch((err) => console.error(err));
   });
   /* END OF ROOMS */
+
+  /*** FRIENDS ***/
+  socket.on("get friends", (username, callback) => {
+    console.log("in get friends for user : " + username);
+    let result = getFriendsController(username);
+    result
+      .then((myFriends) => {
+        callback(myFriends);
+      })
+      .catch((err) => console.error(err));
+  });
+
+  // todo: if already friend, then reject request
+  socket.on("send friend request", ({ username, friend }, callback) => {
+    console.log(`${username} is adding ${friend} as a friend`);
+
+    if (username === friend) {
+      callback("you cannot be your own friend");
+      return;
+    }
+
+    // TODO: fetch user ID from db - confirm user exists else return
+
+    if(addFriendController(username, friend)) {
+      let targetId = friend;
+      callback("OK");
+      const targetUser = getIdByUsername(friend);
+      if (targetUser !== "") {
+        io.to(targetId).emit("friend request", username);
+      }
+    } else {
+      callback("friend already exists");
+    }
+
+  });
+
+  socket.on("add user to room", (obj, callback) => {
+    console.log(obj);
+    const { user, roomObj, requestedBy } = obj;
+    let targetUser = getIdByUsername(user);
+    if (targetUser !== "") {
+      let targetId = targetUser.id;
+      let targetUsername = targetUser.username;
+      if (targetUsername === requestedBy) {
+        callback("add user same username");
+      } else {
+        callback("add user success");
+        io.to(targetId).emit("room request", obj);
+      }
+    } else {
+      callback("add user error");
+    }
+  });
+
+  socket.on("delete friend", ({ username, friend }, callback) => {
+    console.log(`${username} is removing ${friend} as a friend`);
+    let result = removeFriendController(username, friend);
+    result
+      .then((res) => {
+        callback(res);
+      })
+      .catch((err) => console.error(err));
+  });
+
+  /*** END OF FRIENDS ***/
 
   /*** CHAT DATA ***/
   /* ON JOINING A NEW CHAT ROOM */

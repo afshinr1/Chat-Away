@@ -4,16 +4,23 @@ import { socket } from "../Utilities/API";
 import { useSelector, useDispatch } from "react-redux";
 import { addFriend, removeFriend, setFriends } from "../../actions/MyFriendsActions";
 
+import Button from "@material-ui/core/Button";
 import Face from "@material-ui/icons/Face";
-import { toast } from "react-toastify";
-import { useStyles } from "../Requests/RequestStyles";
+import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
+import { toast, Flip } from "react-toastify";
+import { useStyles } from "./FriendStyles";
+import { useStyles as useStylesRequest } from "../Requests/RequestStyles";
 
 import FriendCard from "./FriendCard";
 
 function FriendList(props) {
     const classes = useStyles();
+    const classesRequest = useStylesRequest();
+
     const dispatch = useDispatch();
     const myFriends = useSelector((state) => state.MyFriendsReducer.friendList);
+    const [friendName, setFriendName] = useState("");
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const username = user.username;
@@ -21,41 +28,64 @@ function FriendList(props) {
     useEffect(() => {
         let unmounted = false;
 
-        socket.emit("get myFriends", username);
-    
-        //Get response
-        socket.on("my friends data", (data) => {
-            console.log(data);
-            if (!unmounted) {
-                dispatch(setFriends(data));
-                setFriends([...data]);
-            }
+        socket.emit("get friends", username, (friends) => {
+          console.log(friends);
+          if (!unmounted) {
+            dispatch(setFriends(friends));
+          }
         });
     
         return () => { unmounted = true };
     }, [username, dispatch]);
 
-    /* CREATE A FRIEND LIST TO RENDER, USING FRIEND CARD COMPONENT, ELSE RENDER NO REQUESTS */
-    let friendList = [];
-    if (myFriends.length > 0) {
-        friendList = myFriends.map((friend, index) => (
-            <FriendCard 
-                key={index}
-                data={friend}
-            />
-        ));
-    }
-    else {
-        friendList = <Typography className={classes.noRequests}>No Friends? Get One!</Typography>;
+    const onChangeHandler = (event) => {
+      let name = (event.target.value).trim();
+      if (name === "") return;
+      setFriendName(name);
     }
 
+    const onClickHandler = (event) => {
+      const sendData = {
+        username: username,
+        friend: friendName
+      }
+      socket.emit("send friend request", sendData, (message) => {
+        console.log(message);
+        if (message.includes("OK")) {
+          toast.dark(`Friend request sent to ${sendData.friend}!`, {
+            toastId: sendData.friend,
+            transition: Flip,
+          });
+        }
+        else {
+          toast.error(message, {
+            position: "top-center",
+          });
+        }
+      });
+    }
+
+  /* CREATE A FRIEND LIST TO RENDER, USING FRIEND CARD COMPONENT, ELSE RENDER NO REQUESTS */
+  let friendList = [];
+  if (myFriends.length > 0) {
+    friendList = myFriends.map((friend, index) => (
+      <FriendCard 
+        key={index}
+        data={friend}
+      />
+    ));
+  }
+  else {
+      friendList = <Typography className={classesRequest.noRequests}>No Friends? Get One!</Typography>;
+  }
+
   return (
-    <Box component="div" className={classes.requestsContainer}>
+    <Box component="div" className={classesRequest.requestsContainer}>
       {/* HEADER FOR FRIENDS */}
-      <div className={classes.requestIconContainer}>
+      <div className={classesRequest.requestIconContainer}>
         <Badge
           badgeContent={"xxx"}
-          className={classes.badge}
+          className={classesRequest.badge}
           color="error"
         >
           <Typography variant="h5">My Friends</Typography>
@@ -63,7 +93,32 @@ function FriendList(props) {
         </Badge>
       </div>
 
-      <div className={classes.friendList}>{friendList}</div>
+      <div className={classesRequest.friendList}>{friendList}</div>
+      
+      {/* Add a new friend */}
+      <div className={classes.addFriendSection}>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Add a new Friend!"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            onChange={onChangeHandler}
+          />
+        </div>
+        <Button 
+          variant="contained" 
+          color="primary"
+          onClick={onClickHandler}
+          disabled={friendName === ""}
+        >
+          Add Friend
+        </Button>
+      </div>
     </Box>
   );
 }
