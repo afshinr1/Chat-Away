@@ -7,6 +7,7 @@
     padding: 5px 10px;
     color: white;
     display: inline-block;
+    margin-top: 7px;
     max-width: 80%;
   }
   
@@ -62,6 +63,7 @@
   
   .user-info {
     display: flex;
+    align-items: center;
   }
   
   .backgroundBlue{

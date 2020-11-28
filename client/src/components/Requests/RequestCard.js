@@ -41,8 +41,8 @@ export default function RequestCard({ data, type, handleAdd, handleCancel }) {
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
-          image="/images/group.png"
-          title="Contemplative Reptile"
+          image={ type === 'friend' ? "/images/friend.png" : "/images/group.png"}
+          title="New Request"
         >
           <Typography
             gutterBottom

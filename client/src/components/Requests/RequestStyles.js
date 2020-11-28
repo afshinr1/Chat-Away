@@ -46,11 +46,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 140,
-    backgroundColor: "#0199AB",
     opacity: "80%",
     position: "relative",
     textAlign: "center",
-    color: "#0000FF",
   },
   roomName: {
     fontWeight: "900",

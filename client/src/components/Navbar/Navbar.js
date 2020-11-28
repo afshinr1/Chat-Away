@@ -8,10 +8,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import { Button } from "@material-ui/core";
 import { history } from "../Utilities/History";
 
-
 /* NAVBAR. NEED TO CHANGE STUFF AS NEEDED */
 export default function Navbar() {
-  const user = JSON.parse(sessionStorage.getItem("user"));
   const classes = useStyles();
 
   const handleLogout = () => {
@@ -20,11 +18,12 @@ export default function Navbar() {
   };
 
   return (
-    <div >
+    <div>
       <AppBar position="static" className={classes.navbar}>
         <Toolbar>
           <img
             className={classes.img_logo}
+            onClick={(e) => history.push("/")}
             src={`${process.env.PUBLIC_URL}/images/logo.png`}
             alt="Logo.png"
           />

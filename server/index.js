@@ -15,6 +15,7 @@ const http = require("http");
 const cors = require("cors");
 const {
   getUserController,
+  setUserProfilePicController,
 } = require("./controllers/UserController");
 const {
   createRoomController,
@@ -59,6 +60,14 @@ io.on("connection", (socket) => {
     console.log("on first connect", username);
     addUserAll(socket.id, username);
   });
+
+  /* HANDLE PROFILE PIC IMAGE UPLOAD */
+  socket.on("image upload", (data, callback) => {
+    const { username, image } = data;
+    const response = setUserProfilePicController(username, image);
+    response.then((res) => callback(res));
+  });
+
   /* ROOMS */
 
   /* Get all rooms for a user */
@@ -114,13 +123,13 @@ io.on("connection", (socket) => {
   socket.on("get friends", (username, callback) => {
     console.log("in get friends for user : " + username);
     getFriendsController(username)
-    .then(res => {
-      console.log(res);
-      callback(res);
-    })
-    .catch(err => {
-      console.error(err);
-    });
+      .then((res) => {
+        console.log(res);
+        callback(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   });
 
   socket.on("send friend request", ({ username, friend }, callback) => {
@@ -136,18 +145,19 @@ io.on("connection", (socket) => {
       callback("this user does not exist");
     }
 
-    addFriendController(username, friend)
-    .then((addedFriend) => {
-      if(addedFriend) {
+    addFriendController(username, friend).then((addedFriend) => {
+      if (addedFriend) {
         callback("OK");
-        
+
         // if friend is online, send them a notification
         const targetUser = getIdByUsername(friend);
         if (targetUser !== "") {
           io.to(targetUser.id).emit("friend request", username);
         }
       } else {
-        callback("you are already friends or have already sent a friend request to this user");
+        callback(
+          "you are already friends or have already sent a friend request to this user"
+        );
       }
     });
   });
@@ -166,22 +176,22 @@ io.on("connection", (socket) => {
   socket.on("get requests", (username, callback) => {
     console.log("in get friend requests for user : " + username);
     getFriendRequestsController(username)
-    .then(res => {
-      console.log(res);
+      .then((res) => {
+        console.log(res);
 
-      let friendRequests = [];
-      if (res !== null) {
-        friendRequests = res.map(x => ({
-          ...x,
-          type: "friend"
-        }));
-      }
-      callback(friendRequests);
-    })
-    .catch(err => {
-      console.error(err);
-    });
-  })
+        let friendRequests = [];
+        if (res !== null) {
+          friendRequests = res.map((x) => ({
+            ...x,
+            type: "friend",
+          }));
+        }
+        callback(friendRequests);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
   /*** END OF FRIENDS ***/
 
   /*** CHAT DATA ***/
@@ -221,7 +231,7 @@ io.on("connection", (socket) => {
     // console.log(
     //   `server got message ${message} by ${message.username} in room ${user.room}`
     // );
-    let newMsg = createMessage(message.type, message.text, user.username);
+    let newMsg = createMessage(message.type, message.text, user.username, message.profilePic, );
     io.to(user.room).emit("message", newMsg);
   });
 

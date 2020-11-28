@@ -37,12 +37,13 @@ const changeMessageNames = (username, newName) => {
 };
 
 /** USED **/
-const createMessage = (type, text, username) => {
+const createMessage = (type, text, username, profilePic) => {
   return {
     text: text,
     username: username,
     color: "000000",
     type : type,
+    profilePic : profilePic,
     date: moment().format("h:mm:ss a"),
   };
 };

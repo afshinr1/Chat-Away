@@ -10,6 +10,10 @@ export const addRequest = (request) => {
   return { type: "ADD_REQUEST", payload: request };
 };
 
+export const appendRequests = (requests) => {
+  return { type: "ADD_MULTIPLE_REQUESTS", payload: requests };
+};
+
 /* remove a Request from global state requests */
 export const removeRequest = (id) => {
   return { type: "REMOVE_REQUEST", payload: id };

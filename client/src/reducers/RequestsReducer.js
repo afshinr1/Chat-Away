@@ -8,6 +8,12 @@ export const RequestsReducer = (state = initialState, action) => {
         ...state,
         requests: [...action.payload]
       };
+
+      case "ADD_MULTIPLE_REQUESTS":
+        return{
+          ...state,
+          requests: [...action.payload, ...state.requests]
+        }
     
     case "ADD_REQUEST":
       const requestId = action.payload.requestId;

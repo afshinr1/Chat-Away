@@ -18,6 +18,7 @@ function Login(props) {
       firstName: response.profileObj.givenName,
       lastName: response.profileObj.familyName,
       profile_img: response.profileObj.imageUrl,
+      google : true,
       role: null,
       username: response.profileObj.name.toLowerCase(),
     };

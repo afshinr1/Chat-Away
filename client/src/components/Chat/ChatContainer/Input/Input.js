@@ -11,6 +11,7 @@ import { useStyles } from "./Styles";
 /* INPUT BAR TO SEND MESSAGES */
 function Input({ handleMessage }) {
   const classes = useStyles();
+  const profilePic = JSON.parse(sessionStorage.getItem('user')).profile_img;
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
   const [openEmoji, setOpenEmoji] = useState(false);
@@ -27,7 +28,7 @@ function Input({ handleMessage }) {
   /* SEND MESSAGE TO SERVER */
   const sendMessage = () => {
     if (message !== "") {
-      let msgObj = { type: "text", text: message };
+      let msgObj = { type: "text", text: message, profilePic : profilePic };
       handleMessage(msgObj);
       setMessage("");
     }
@@ -35,7 +36,7 @@ function Input({ handleMessage }) {
 
   /* SEND IMAGE TO SERVER */
   const handleImage = (image) => {
-    let msgObj = { type: "image", text: image };
+    let msgObj = { type: "image", text: image, profilePic : profilePic };
     handleMessage(msgObj);
   };
 
