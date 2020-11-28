@@ -3,6 +3,12 @@ const initialState = { requests: [] };
 /* Used for setting/adding and removing invitation requests */
 export const RequestsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "SET_REQUESTS":
+      return {
+        ...state,
+        requests: [...action.payload]
+      };
+    
     case "ADD_REQUEST":
       const requestId = action.payload.requestId;
       const idList = state.requests.map((req) => req.requestId);

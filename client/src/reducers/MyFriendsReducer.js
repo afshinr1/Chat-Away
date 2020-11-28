@@ -1,23 +1,24 @@
-const initialState = { friendList: [] };
+const initialState = { friends: [] };
 
 /* Used for setting and adding friends */
 export const MyFriendsReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_FRIENDS":
+      console.log(action);
       return {
         ...state,
-        friendList: action.payload,
+        friends: action.payload === null ? [] : [...action.payload]
       };
     case "ADD_FRIEND":
       return {
         ...state,
-        friendList: [action.payload, ...state.friendList],
+        friends: [action.payload, ...state.friends],
       };
     case "REMOVE_FRIEND":
-      const updatedFriendList = [...state.friendList].filter(x => x.id !== action.payload.id);
+      const updatedFriendList = [...state.friends].filter(x => x.id !== action.payload.id);
       return {
         ...state,
-        friendList: updatedFriendList
+        friends: updatedFriendList
       };
 
     default:

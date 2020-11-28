@@ -14,6 +14,9 @@ const socketio = require("socket.io");
 const http = require("http");
 const cors = require("cors");
 const {
+  getUserController,
+} = require("./controllers/UserController");
+const {
   createRoomController,
   getPublicRoomsController,
   joinRoomController,
@@ -24,9 +27,11 @@ const {
   getFriendsController,
   addFriendController,
   removeFriendController,
+  getFriendRequestsController,
 } = require("./controllers/FriendController");
 const { createMessage } = require("./utilities/Messages");
 const { create } = require("domain");
+const UserController = require("./controllers/UserController");
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -95,7 +100,7 @@ io.on("connection", (socket) => {
   /* Get all public rooms */
   socket.on("get public rooms", (callback) => {
     let result = getPublicRoomsController();
-    console.log("Get public roosm ");
+    console.log("Get public rooms");
     result
       .then((publicRooms) => {
         console.log(publicRooms);
@@ -108,15 +113,16 @@ io.on("connection", (socket) => {
   /*** FRIENDS ***/
   socket.on("get friends", (username, callback) => {
     console.log("in get friends for user : " + username);
-    let result = getFriendsController(username);
-    result
-      .then((myFriends) => {
-        callback(myFriends);
-      })
-      .catch((err) => console.error(err));
+    getFriendsController(username)
+    .then(res => {
+      console.log(res);
+      callback(res);
+    })
+    .catch(err => {
+      console.error(err);
+    });
   });
 
-  // todo: if already friend, then reject request
   socket.on("send friend request", ({ username, friend }, callback) => {
     console.log(`${username} is adding ${friend} as a friend`);
 
@@ -125,42 +131,28 @@ io.on("connection", (socket) => {
       return;
     }
 
-    // TODO: fetch user ID from db - confirm user exists else return
-
-    if(addFriendController(username, friend)) {
-      let targetId = friend;
-      callback("OK");
-      const targetUser = getIdByUsername(friend);
-      console.log('target friend user');
-      console.log(friend);
-      if (targetUser !== "") {
-        io.to(targetUser.id).emit("friend request", username);
-      }
-    } else {
-      callback("friend already exists");
+    const user = getUserController(friend);
+    if (user === null) {
+      callback("this user does not exist");
     }
 
-  });
-
-  socket.on("add user to room", (obj, callback) => {
-    console.log(obj);
-    const { user, roomObj, requestedBy } = obj;
-    let targetUser = getIdByUsername(user);
-    if (targetUser !== "") {
-      let targetId = targetUser.id;
-      let targetUsername = targetUser.username;
-      if (targetUsername === requestedBy) {
-        callback("add user same username");
+    addFriendController(username, friend)
+    .then((addedFriend) => {
+      if(addedFriend) {
+        callback("OK");
+        
+        // if friend is online, send them a notification
+        const targetUser = getIdByUsername(friend);
+        if (targetUser !== "") {
+          io.to(targetUser.id).emit("friend request", username);
+        }
       } else {
-        callback("add user success");
-        io.to(targetId).emit("room request", obj);
+        callback("you are already friends or have already sent a friend request to this user");
       }
-    } else {
-      callback("add user error");
-    }
+    });
   });
 
-  socket.on("delete friend", ({ username, friend }, callback) => {
+  socket.on("remove friend", ({ username, friend }, callback) => {
     console.log(`${username} is removing ${friend} as a friend`);
     let result = removeFriendController(username, friend);
     result
@@ -170,6 +162,26 @@ io.on("connection", (socket) => {
       .catch((err) => console.error(err));
   });
 
+  // only fetches friend requests from the DB
+  socket.on("get requests", (username, callback) => {
+    console.log("in get friend requests for user : " + username);
+    getFriendRequestsController(username)
+    .then(res => {
+      console.log(res);
+
+      let friendRequests = [];
+      if (res !== null) {
+        friendRequests = res.map(x => ({
+          ...x,
+          type: "friend"
+        }));
+      }
+      callback(friendRequests);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  })
   /*** END OF FRIENDS ***/
 
   /*** CHAT DATA ***/

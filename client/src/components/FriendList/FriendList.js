@@ -14,28 +14,28 @@ import { useStyles as useStylesRequest } from "../Requests/RequestStyles";
 
 import FriendCard from "./FriendCard";
 
-function FriendList(props) {
+function FriendList() {
     const classes = useStyles();
     const classesRequest = useStylesRequest();
 
     const dispatch = useDispatch();
-    const myFriends = useSelector((state) => state.MyFriendsReducer.friendList);
+    const friends = useSelector((state) => state.MyFriendsReducer.friends);
     const [friendName, setFriendName] = useState("");
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const username = user.username;
 
     useEffect(() => {
-        let unmounted = false;
+      let unmounted = false;
 
-        socket.emit("get friends", username, (friends) => {
-          console.log(friends);
-          if (!unmounted) {
-            dispatch(setFriends(friends));
-          }
-        });
-    
-        return () => { unmounted = true };
+      socket.emit("get friends", username, (friends) => {
+        console.log(friends);
+        if (!unmounted) {
+          dispatch(setFriends(friends));
+        }
+      });
+  
+      return () => { unmounted = true };
     }, [username, dispatch]);
 
     const onChangeHandler = (event) => {
@@ -49,6 +49,7 @@ function FriendList(props) {
         username: username,
         friend: friendName
       }
+
       socket.emit("send friend request", sendData, (message) => {
         console.log(message);
         if (message.includes("OK")) {
@@ -67,8 +68,8 @@ function FriendList(props) {
 
   /* CREATE A FRIEND LIST TO RENDER, USING FRIEND CARD COMPONENT, ELSE RENDER NO REQUESTS */
   let friendList = [];
-  if (myFriends.length > 0) {
-    friendList = myFriends.map((friend, index) => (
+  if (friends.length > 0) {
+    friendList = friends.map((friend, index) => (
       <FriendCard 
         key={index}
         data={friend}

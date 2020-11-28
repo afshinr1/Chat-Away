@@ -53,6 +53,5 @@ const register = (firstName, lastName, username, password, email) => {
   });
 };
 
-
 module.exports.validate = validate;
 module.exports.register = register;

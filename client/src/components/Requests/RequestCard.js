@@ -10,8 +10,31 @@ import { IconButton } from "@material-ui/core";
 import { useStyles } from "./RequestStyles";
 
 /* REQUEST CARD COMPONENT. (PRIMARILY USED FOR ROOMS)*/
-export default function RoomRequestCard({ data, handleAdd, handleCancel }) {
+export default function RequestCard({ data, type, handleAdd, handleCancel }) {
   const classes = useStyles();
+
+  let cardContent = null;
+  if (type === "room") {
+    cardContent = (
+      <CardContent>
+        <Typography gutterBottom variant="body1" component="h2">
+          Room : {data.roomObj.roomName}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Requested by : {data.requestedBy}
+        </Typography>
+      </CardContent>
+    );
+  }
+  else if (type === "friend") {
+    cardContent = (
+      <CardContent>
+        <Typography gutterBottom variant="body1" component="h2">
+          { data.friend } wants to be your friend.
+        </Typography>
+      </CardContent>
+    );
+  }
 
   return (
     <div className={classes.card_container}>
@@ -31,14 +54,8 @@ export default function RoomRequestCard({ data, handleAdd, handleCancel }) {
           </Typography>
         </CardMedia>
 
-        <CardContent>
-          <Typography gutterBottom variant="body1" component="h2">
-            Room : {data.roomObj.roomName}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Requested by : {data.requestedBy}
-          </Typography>
-        </CardContent>
+        { cardContent }
+
         <CardActions className={classes.action}>
           <IconButton
             className={`${classes.check_icon} ${classes.scale}`}

@@ -1,10 +1,10 @@
 import { Badge, Box, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { socket } from "../Utilities/API";
 import MailIcon from "@material-ui/icons/Mail";
 import { useSelector, useDispatch } from "react-redux";
-import { removeRequest } from "../../actions/RequestsActions";
-import RoomRequestCard from "./RoomRequestCard";
+import { setRequests, addRequest, removeRequest } from "../../actions/RequestsActions";
+import RequestCard from "./RequestCard";
 import { toast } from "react-toastify";
 import { useStyles } from "./RequestStyles";
 import { addRoom } from "../../actions/MyRoomsActions";
@@ -17,6 +17,21 @@ function Requests() {
   const myRooms = useSelector((state) => state.MyRoomsReducer.roomList);
   const myRoomNames = myRooms.map((room) => room.roomName);
   const requestsNum = requests.length;
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const username = user.username;
+
+  useEffect(() => {
+    let unmounted = false;
+
+    socket.emit("get requests", username, (requests) => {
+      console.log(requests);
+      if (!unmounted) {
+        dispatch(setRequests(requests));
+      }
+    });
+
+    return () => { unmounted = true };
+  }, [username, dispatch]);
 
   /*  HANDLE ADDING ROOM FOR THE USER */
   const handleAdd = (data) => {
@@ -51,25 +66,45 @@ function Requests() {
     });
   };
 
+  /* TODO: HANDLE ADDING FRIEND TO FRIENDLIST */
+  const handleAddFriend = (friendName) => {
+    
+  }
+
+  /* TODO: HANDLE REMOVING FRIEND REQUEST */
+  const handleCancelFriend = (friendName) => {
+
+  }
+
   /* CREATE A REQUEST LIST TO RENDER, USING REQUEST CARD COMPONENT, ELSE RENDER NO REQUESTS */
-  let requestList;
+  let requestList = (
+    <Typography className={classes.noRequests}>No Requests!</Typography>
+  );
+
   if (requests.length > 0) {
     requestList = requests.map((request, index) => {
       if (request.type === "room") {
         return (
-          <RoomRequestCard
+          <RequestCard
             key={index}
             data={request}
+            type="room"
             handleAdd={handleAdd}
             handleCancel={handleCancel}
           />
         );
-      } else return <h1>friend request card</h1>;
+      } else if (request.type === "friend") {
+        return (
+          <RequestCard
+            key={index}
+            data={request}
+            type="friend"
+            handleAdd={handleAddFriend}
+            handleCancel={handleCancelFriend}
+          />
+        )
+      };
     });
-  } else {
-    requestList = (
-      <Typography className={classes.noRequests}>No Requests!</Typography>
-    );
   }
 
   return (
