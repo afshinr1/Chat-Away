@@ -26,8 +26,10 @@ export const useStyles = makeStyles((theme) => ({
     padding: "10px",
     margin: "25px",
     color: "#0C2340",
+    borderRadius: "5px",
+    textAlign: "center",
     boxShadow: "3px 3px 3px 3px",
-    fontFamily: "Roboto",
+    fontFamily: "Arial",
   },
 
   /* END MAIN REQUEST CONTAINER STYLES */

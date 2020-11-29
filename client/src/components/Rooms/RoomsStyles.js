@@ -36,6 +36,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   viewbtn: {
+    marginTop: theme.spacing(2),
     margin: theme.spacing(1),
     maxWidth: "50%",
   },

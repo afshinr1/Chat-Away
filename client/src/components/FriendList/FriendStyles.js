@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
+      marginLeft: theme.spacing(2),
       width: "auto",
     },
   },
@@ -24,6 +24,12 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  clickAdd: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    margin: theme.spacing(2),
   },
   inputRoot: {
     color: "inherit",

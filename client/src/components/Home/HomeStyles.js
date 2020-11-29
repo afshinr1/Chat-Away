@@ -19,17 +19,18 @@ export const useStyles = makeStyles((theme) => ({
   /* APPLY BORDER STYLES TO THE DIFFERENT COLUMNS */
   col1: {
     backgroundColor: "#F8F8FF",
-    border: "1px solid red",
+    border: "2px solid #0C2340",
   },
   col2: {
-    border: "1px solid blue",
+    border: "2px solid #0C2340",
+    padding: "0px 5px 5px",
   },
   col3: {
     backgroundColor: "#F8F8FF",
-    border: "2px solid blue",
+    border: "3px solid #0C2340",
   },
   col4: {
-    border: "1px solid #00FF00",
+    border: "2px solid #0C2340",
   },
 }));
 

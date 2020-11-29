@@ -111,14 +111,16 @@ function FriendList() {
             onChange={onChangeHandler}
           />
         </div>
-        <Button 
-          variant="contained" 
-          color="primary"
-          onClick={onClickHandler}
-          disabled={friendName === ""}
-        >
-          Add Friend
-        </Button>
+        <div className={classes.clickAdd}>
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={onClickHandler}
+            disabled={friendName === ""}
+          >
+            Add Friend
+          </Button>
+        </div>
       </div>
     </Box>
   );
