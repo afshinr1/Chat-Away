@@ -44,7 +44,7 @@ export default function Navbar() {
           </div>
           <div className={classes.grow} />
 
-          <Button variant="outlined" color="inherit" onClick={handleLogout}>
+          <Button className={classes.logout} variant="outlined" color="inherit" onClick={handleLogout}>
             Logout
           </Button>
         </Toolbar>

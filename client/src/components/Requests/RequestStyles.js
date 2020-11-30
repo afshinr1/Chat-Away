@@ -29,7 +29,16 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: "5px",
     textAlign: "center",
     boxShadow: "3px 3px 3px 3px",
-    fontFamily: "Arial",
+    fontFamily: [
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
   },
 
   /* END MAIN REQUEST CONTAINER STYLES */
@@ -45,6 +54,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     maxWidth: 400,
     margin: "10px",
+    paddingTop: "10px",
   },
   media: {
     height: 140,

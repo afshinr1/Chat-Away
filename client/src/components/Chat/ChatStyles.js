@@ -20,7 +20,8 @@ export const useStyles = makeStyles((theme) => ({
     display : 'flex',
     alignItems : "center",
     paddingLeft : '10px',
-    paddingRight : '10px'
+    paddingRight : '10px',
+    color: "#0C2340",
   },
   btn: {
     width: "10%",
@@ -30,13 +31,14 @@ export const useStyles = makeStyles((theme) => ({
 
   /* COLUMN BORDER STYLES */
   col1: {
-    border: "1px solid #0000FB",
+    border: "2px solid #0B44E3",
   },
   col2: {
-    border: "1px solid #01FC01",
+    border: "2px solid #3C966F",
   },
   col3: {
-    border: "1px solid #FF0000",
+    border: "2px solid #CC0000",
+    padding: "10px",
   },
 
   /* MOBILE DRAWER STYLES START */

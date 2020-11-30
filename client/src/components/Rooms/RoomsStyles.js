@@ -26,6 +26,10 @@ export const useStyles = makeStyles((theme) => ({
     minWidth: "100%",
     marginTop: theme.spacing(2),
     minHeight : '5rem',
+    "&:hover": {
+      backgroundColor: "#ADADAD",
+      boxShadow: "none",
+    },
   },
   cardHeader: {
     transform: "scale(1.2)",
@@ -39,6 +43,9 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     margin: theme.spacing(1),
     maxWidth: "50%",
+    "&:hover": {
+      backgroundColor: "#DFE0F2",
+    },
   },
   /* Homepage Room column styles END */
 
@@ -61,7 +68,8 @@ export const useStyles = makeStyles((theme) => ({
     overflow : 'auto',
     height: "70vh",
     backgroundColor: "#0C2340",
-    border: "2px solid #000",
+    border: "2px solid #45698C",
+    borderRadius: "10px",
     boxShadow: theme.shadows[5],
     color: "#FEFEFE",
     padding: theme.spacing(2, 4, 3),

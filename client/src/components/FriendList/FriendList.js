@@ -40,7 +40,10 @@ function FriendList() {
 
     const onChangeHandler = (event) => {
       let name = (event.target.value).trim();
-      if (name === "") return;
+      if (name === "") { 
+        setFriendName("");
+        return; 
+      }
       setFriendName(name);
     }
 
@@ -116,7 +119,7 @@ function FriendList() {
             variant="contained" 
             color="primary"
             onClick={onClickHandler}
-            disabled={friendName === ""}
+            disabled={friendName ? false : true}
           >
             Add Friend
           </Button>

@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
   emojiBtn: {
     color: "yellow",
     backgroundColor: "#30445C",
-    borderRadius: "0",
+    borderRadius: "4px",
 
     "&:hover": {
       backgroundColor: "#0C2340",

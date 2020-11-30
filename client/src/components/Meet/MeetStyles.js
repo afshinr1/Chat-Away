@@ -56,7 +56,7 @@ export const MeetButton = withStyles({
       position : 'relative',
       borderRadius: "15px",
       lineHeight: 2,
-      backgroundColor: "#E2E2E2",
+      backgroundColor: "#F2F2F2",
       borderColor: "#0063cc",
       fontFamily: [
         "Roboto",

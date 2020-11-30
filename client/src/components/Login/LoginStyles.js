@@ -92,6 +92,7 @@ export const useStyles = makeStyles((theme) => ({
     width: "25rem",
     height: "25rem",
     objectFit: "contain",
+    margin: theme.spacing(4),
   },
   error: {
     color: "#FB0112",
