@@ -53,7 +53,6 @@ app.use("/", require("./routes"));
 
 /* New User connects to server */
 io.on("connection", (socket) => {
-  console.log("A user has connected " + socket.id);
 
   /* Add user to all user list on first connect*/
   socket.on("connection", (username) => {

@@ -54,7 +54,11 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: "#27293D",
     color: "#FF0102",
   },
-  leaveBtn: {
+  accordian : {
+    backgroundColor: "#27293D",
+
+  },
+  deleteBtn: {
     backgroundColor: "#CC0202",
     color: "#FEFEFE",
     "&:hover": {
@@ -62,10 +66,11 @@ export const useStyles = makeStyles((theme) => ({
       color: "#F8F8F8",
     },
   },
-  white : {
-    color : '#FEFEFE'
-  },
+
   red: {
     color: "#FF0000",
   },
+  white : {
+      color : '#FEFEFE'
+  }
 }));

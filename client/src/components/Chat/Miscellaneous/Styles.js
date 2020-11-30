@@ -56,3 +56,37 @@ export const LeaveButton = withStyles({
     },
   },
 })(Button);
+
+
+/* DELETE BUTTON STYLES */
+export const DeleteButton = withStyles({
+  root: {
+    boxShadow: "none",
+    fontSize: 15,
+    textTransform: "uppercase",
+    margin: "20px 20px",
+    letterSpacing: "2px",
+    border: "1px solid",
+    position: "relative",
+    borderRadius: "5px",
+    lineHeight: 2,
+    color: "#F8F8FE",
+    backgroundColor: "#FF0203",
+    opacity: "50%",
+    borderColor: "#FF0101",
+    transition: "all 650ms",
+    fontFamily: ["Roboto"].join(","),
+    "&:hover": {
+      color: "#F8F8FE",
+      backgroundColor: "#FF0000",
+      opacity: "100%",
+      transform: "scale(1.1)",
+    },
+    "&:active": {
+      // boxShadow: "none",
+      // backgroundColor: "#27293D",
+      // borderColor: "#0C2340",
+      // color: "#FEFEFE",
+    },
+  },
+})(Button);

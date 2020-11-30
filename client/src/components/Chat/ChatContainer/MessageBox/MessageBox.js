@@ -7,7 +7,7 @@ const useStyles = makeStyles({
   scroll: {
     overflowY: "auto",
     flex: "auto",
-    maxHeight: "75vh",
+    maxHeight: "72vh",
   },
 });
 
@@ -25,8 +25,8 @@ function MessageBox({ username, messages }) {
       });
     }
   }, []);
-  
-    /* MAP ALL MESSAGES */
+
+  /* MAP ALL MESSAGES */
   const text = messages.map((message, i) => (
     <div key={i}>
       {" "}

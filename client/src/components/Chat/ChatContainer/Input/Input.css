@@ -1,34 +1,37 @@
 .input-form {
-    display: flex;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    margin-top : 20px;
-    padding-right: 10px;
-  }
-  
-  .message-input {
-    border: 2px solid black;
-    border-radius: 4px;
-    padding-left: 0.5rem;
-    flex: 0.9;
-    font-size: 1.2rem;
-    font-weight: bolder;
-  }
-  .message-button {
-    flex: 0.1;
-  }
-
-  .emoji-picker {
-    position: relative;
-  }
-.picker {
+  display: flex;
   position: absolute;
-  display: none;
-  top: -700%;
-  left : 0;
+  bottom: 0;
+  width: 100%;
+  margin-top : 20px;
+  padding-right: 10px;
+}
+
+/* NOT USED */
+.message-input {
+  border: 2px solid black;
+  border-radius: 4px;
+  padding-left: 0.5rem;
+  flex: 0.9;
+  font-size: 1.2rem;
+  font-weight: bolder;
+}
+/*    */
+
+.message-button {
+  flex: 0.1;
+}
+
+.emoji-picker {
+  position: relative;
+}
+.picker {
+position: absolute;
+display: none;
+top: -700%;
+left : 0;
 }
 
 .show {
-  display: block;
+display: block;
 }
