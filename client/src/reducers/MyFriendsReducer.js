@@ -4,7 +4,6 @@ const initialState = { friends: [] };
 export const MyFriendsReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_FRIENDS":
-      console.log(action);
       return {
         ...state,
         friends: action.payload === null ? [] : [...action.payload]

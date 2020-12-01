@@ -47,10 +47,11 @@ function FriendList() {
     const onClickHandler = (event) => {
       const sendData = {
         username: username,
-        friend: friendName
+        friend: friendName,
+        isFriendRequest: true
       }
 
-      socket.emit("send friend request", sendData, (message) => {
+      socket.emit("add friend", sendData, (message) => {
         console.log(message);
         if (message.includes("OK")) {
           toast.dark(`Friend request sent to ${sendData.friend}!`, {

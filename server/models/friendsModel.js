@@ -14,9 +14,15 @@ const getFriends = (username) => {
 /* Get all pending friend requests */
 const getFriendRequests = (username) => {
     return new Promise((resolve, reject) => {
-        let query = 
-            "SELECT * FROM friendships f1 WHERE user=?"
-        connection.query(query, [username], (error, results, field) => {
+        let query0 = 
+            "SELECT f1.user, f1.friend FROM friendships f1" +
+            "WHERE friend=?" +
+            "AND NOT EXISTS(" +
+                "SELECT f2.user, f2.friend FROM friendships f2" + 
+                "WHERE f2.user=?" + 
+                "AND friend=f1.user" +
+            ")";
+        connection.query(query0, [username, username], (error, results, field) => {
             resolve(results);
         });
     });

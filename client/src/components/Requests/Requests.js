@@ -4,6 +4,7 @@ import { socket } from "../Utilities/API";
 import MailIcon from "@material-ui/icons/Mail";
 import { useSelector, useDispatch } from "react-redux";
 import { setRequests, addRequest, removeRequest } from "../../actions/RequestsActions";
+import { addFriend, removeFriend, setFriends } from "../../actions/MyFriendsActions";
 import RequestCard from "./RequestCard";
 import { toast } from "react-toastify";
 import { useStyles } from "./RequestStyles";
@@ -68,12 +69,39 @@ function Requests() {
 
   /* TODO: HANDLE ADDING FRIEND TO FRIENDLIST */
   const handleAddFriend = (friendName) => {
-    
+    const sendData = {
+      username: username,
+      friend: friendName,
+      isFriendRequest: true,
+    }
+    socket.emit("add friend", sendData, (message) => {
+      console.log(message);
+      if (message.includes("OK")) {
+        toast.dark(`Friend request accepted from ${sendData.friend}!`, {
+          toastId: sendData.friend,
+          transition: Flip,
+        });
+        dispatch(addFriend(friendName));
+      }
+      else {
+        toast.error(message, {
+          position: "top-center",
+        });
+      }
+    });
   }
 
   /* TODO: HANDLE REMOVING FRIEND REQUEST */
   const handleCancelFriend = (friendName) => {
-
+    const sendData = {
+      username: username,
+      friend: friendName,
+    }
+    socket.emit("remove friend", sendData, (message) => {
+      toast.info("Declined Friend Request", {
+        position: "top-center",
+      });
+    });
   }
 
   /* CREATE A REQUEST LIST TO RENDER, USING REQUEST CARD COMPONENT, ELSE RENDER NO REQUESTS */

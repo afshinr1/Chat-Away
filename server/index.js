@@ -132,7 +132,7 @@ io.on("connection", (socket) => {
       });
   });
 
-  socket.on("send friend request", ({ username, friend }, callback) => {
+  socket.on("add friend", ({ username, friend, isFriendRequest }, callback) => {
     console.log(`${username} is adding ${friend} as a friend`);
 
     if (username === friend) {
@@ -149,10 +149,12 @@ io.on("connection", (socket) => {
       if (addedFriend) {
         callback("OK");
 
-        // if friend is online, send them a notification
-        const targetUser = getIdByUsername(friend);
-        if (targetUser !== "") {
-          io.to(targetUser.id).emit("friend request", username);
+        if (isFriendRequest) {
+          // if friend is online, send them a notification
+          const targetUser = getIdByUsername(friend);
+          if (targetUser !== "") {
+            io.to(targetUser.id).emit("friend request", username);
+          }
         }
       } else {
         callback(
