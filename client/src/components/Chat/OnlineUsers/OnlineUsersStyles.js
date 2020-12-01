@@ -12,6 +12,7 @@ export const useStyles = makeStyles((theme) => ({
       width: "80vw",
       height: "50vh",
     },
+    overflow : 'auto',
     position: "absolute",
     display: "flex",
     flexDirection: "column",
