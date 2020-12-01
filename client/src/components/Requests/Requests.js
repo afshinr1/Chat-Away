@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setRequests, addRequest, removeRequest } from "../../actions/RequestsActions";
 import { addFriend, removeFriend, setFriends } from "../../actions/MyFriendsActions";
 import RequestCard from "./RequestCard";
-import { toast, Flip } from "react-toastify";
+import { toast } from "react-toastify";
 import { useStyles } from "./RequestStyles";
 import { addRoom } from "../../actions/MyRoomsActions";
 
@@ -23,7 +23,7 @@ function Requests() {
 
   useEffect(() => {
     let unmounted = false;
-
+    
     socket.emit("get requests", username, (requests) => {
       console.log(requests);
       if (!unmounted) {
@@ -68,20 +68,21 @@ function Requests() {
   };
 
   /* TODO: HANDLE ADDING FRIEND TO FRIENDLIST */
-  const handleAddFriend = (friendName) => {
+  const handleAddFriend = (friendRequest) => {
     const sendData = {
       username: username,
-      friend: friendName,
+      friend: friendRequest.user,
       isFriendRequest: true,
     }
     socket.emit("add friend", sendData, (message) => {
       console.log(message);
+      console.log(sendData);
       if (message.includes("OK")) {
-        toast.dark(`Friend request accepted from ${sendData.friend}!`, {
-          toastId: sendData.friend,
-          transition: Flip,
+        toast.info(`Friend request accepted from ${friendRequest.user}!`, {
+          position: "top-center",
         });
-        dispatch(addFriend(friendName));
+        dispatch(addFriend(friendRequest.user));
+        dispatch(removeRequest(friendRequest));
       }
       else {
         toast.error(message, {

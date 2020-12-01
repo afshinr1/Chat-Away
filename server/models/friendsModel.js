@@ -4,8 +4,9 @@ const connection = require("../connection");
 const getFriends = (username) => {
     return new Promise((resolve, reject) => {
         let query =
-            "SELECT f1.* FROM friendships f1 INNER JOIN friendships f2 ON f1.user = f2.friend and f1.friend = f2.user WHERE user=?";
+            "SELECT f1.user, f1.friend FROM friendships f1 WHERE f1.user=? AND EXISTS(SELECT f2.user, f2.friend FROM friendships f2 WHERE f2.user=f1.friend AND f2.friend=f1.user)";
         connection.query(query, [username], (error, results, field) => {
+            if (error) reject(error)
             resolve(results);
         });
     });
@@ -15,14 +16,9 @@ const getFriends = (username) => {
 const getFriendRequests = (username) => {
     return new Promise((resolve, reject) => {
         let query0 = 
-            "SELECT f1.user, f1.friend FROM friendships f1" +
-            "WHERE friend=?" +
-            "AND NOT EXISTS(" +
-                "SELECT f2.user, f2.friend FROM friendships f2" + 
-                "WHERE f2.user=?" + 
-                "AND friend=f1.user" +
-            ")";
-        connection.query(query0, [username, username], (error, results, field) => {
+            "SELECT f1.user, f1.friend FROM friendships f1 WHERE f1.friend=? AND NOT EXISTS(SELECT f2.user, f2.friend FROM friendships f2 WHERE f2.user=f1.friend AND f2.friend=f1.user)";
+        connection.query(query0, [username], (error, results, field) => {
+            if (error) reject(error);
             resolve(results);
         });
     });
@@ -33,7 +29,8 @@ const addFriend = (username, friend) => {
     return new Promise((resolve, reject) => {
         let query0 = "SELECT * FROM friendships WHERE user = ? AND friend = ?";
         connection.query(query0, [username, friend], (error, results, field) => {
-            if (results.length > 0) {
+            console.log(results);
+            if (results !== undefined && results.length > 0) {
                 resolve(false);
             }
         });
