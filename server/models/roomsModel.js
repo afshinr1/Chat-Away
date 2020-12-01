@@ -38,6 +38,16 @@ const getMyRooms = (username) => {
   });
 };
 
+/* get All rooms */
+const getAllRooms = () => {
+  return new Promise((resolve, reject) => {
+    let query = "SELECT * from rooms";
+    connection.query(query, [], (error, results, field) => {
+      resolve(results);
+    });
+  });
+};
+
 /* Join a user into a new room, insert into DB the room uuid and username*/
 const joinRoom = (room_uuid, username) => {
   return new Promise((resolve, reject, error) => {
@@ -71,8 +81,20 @@ const leaveRoom = (room_uuid, username) => {
   });
 };
 
+/* DLETE ROOM */
+const deleteRoom = (room_uuid) => {
+  return new Promise((resolve, reject) => {
+    let query = "DELETE FROM rooms WHERE uuid = ?";
+    connection.query(query, [room_uuid], (error, results, field) => {
+      if (error) reject("Error in delete room");
+      resolve("Successfully deleted room");
+    });
+  });
+};
 module.exports.createRoom = createRoom;
 module.exports.joinRoom = joinRoom;
 module.exports.getMyRooms = getMyRooms;
 module.exports.getPublicRooms = getPublicRooms;
 module.exports.leaveRoom = leaveRoom;
+module.exports.getAllRooms = getAllRooms;
+module.exports.deleteRoom = deleteRoom;

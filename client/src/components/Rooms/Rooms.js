@@ -18,6 +18,7 @@ function Rooms() {
 
   /* User */
   const user = JSON.parse(sessionStorage.getItem("user"));
+  const admin = user.role === "Admin" ? true : false;
   const username = user.username;
 
   /* Modals */
@@ -42,20 +43,28 @@ function Rooms() {
     );
   }
 
-  /* Get the rooms that the user has joined from DB */
+  /* Get the rooms that the user has joined from DB. If user is an Admin, get all rooms */
   useEffect(() => {
     let unmounted = false;
 
-    socket.emit("get myRooms", username, (roomData) => {
-      if (!unmounted) {
-        dispatch(setMyRooms(roomData));
-      }
-    });
+    if (admin) {
+      socket.emit("get allRooms", username, (roomData) => {
+        if (!unmounted) {
+          dispatch(setMyRooms(roomData));
+        }
+      });
+    } else {
+      socket.emit("get myRooms", username, (roomData) => {
+        if (!unmounted) {
+          dispatch(setMyRooms(roomData));
+        }
+      });
+    }
 
     return () => {
       unmounted = true;
     };
-  }, [username, dispatch]);
+  }, [username, dispatch, admin]);
 
   /* Handle closing the modals */
   const handleModalClose = () => {

@@ -12,8 +12,8 @@ import {
   DialogActions,
 } from "./DeleteStyles";
 import { socket } from "../../../Utilities/API";
-// import { toast, Slide } from "react-toastify";
-// import { history } from "../../../Utilities/History";
+ import { toast, Slide } from "react-toastify";
+ import { history } from "../../../Utilities/History";
 import {
   Accordion,
   AccordionSummary,
@@ -34,10 +34,10 @@ export default function DeleteRoomModal({
     const handleDeleteRoom = e => {
         e.preventDefault();
         socket.emit('delete room', roomObj, response => {
-            // toast.success(response, {
-            //     transition : Slide
-            // })
-            //     history.goBack();
+             toast.success(response, {
+                 transition : Slide
+             })
+                 history.goBack();
         })
     }
 

@@ -15,23 +15,39 @@ import { IconButton } from "@material-ui/core";
 import AddUserModal from "./Miscellaneous/AddUser/AddUserModal";
 import LeaveRoom from "./Miscellaneous/LeaveRoom/LeaveRoom";
 import KickUserModal from "./Miscellaneous/KickUser/KickUserModal";
-export default function MobileView({ roomObj, host }) {
+import ErrorIcon from "@material-ui/icons/Error";
+import OnlineUsersModal from './OnlineUsers/OnlineUsersModal';
+import DeleteRoomModal from "./Miscellaneous/DeleteRoom/DeleteRoomModal";
+export default function MobileView({ roomObj, host, onlineUsers }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
-  const username = JSON.parse(sessionStorage.getItem("user")).username;
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const username = user.username;
+  const admin = user.role === "Admin" ? true : false;
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
   const [openKickUserModal, setOpenKickUserModal] = useState(false);
   const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
-
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [onlineUsersOpen, setonlineUsersOpen] = useState(false);
   /* OPEN ADD USER MODAL */
   const handleAddOpen = (e) => {
     setOpenAddUserModal(true);
   };
 
+  const handleOnlineUsersOpen = (e) => {
+    setonlineUsersOpen(true);
+  };
+
+
   /* OPEN KICK USER MODAL */
   const handleKickOpen = (e) => {
     setOpenKickUserModal(true);
+  };
+
+  /* OPEN DELETE ROOM MODAL (ONLY FOR ADMINS) */
+  const handleDeleteOpen = (e) => {
+    setDeleteDialogOpen(true);
   };
 
   /* CLOSE ALL MODALS */
@@ -39,11 +55,34 @@ export default function MobileView({ roomObj, host }) {
     setOpenAddUserModal(false);
     setOpenKickUserModal(false);
     setLeaveDialogOpen(false);
+    setDeleteDialogOpen(false);
+    setonlineUsersOpen(false);
   };
 
   const toggleDrawer = (bool) => (event) => {
     setOpen(bool);
   };
+
+  const actionButton =
+    user.role === "Admin" ? (
+      <List className={classes.lastElement}>
+        <ListItem button onClick={handleDeleteOpen}>
+          <ListItemIcon>
+            <ErrorIcon className={classes.red} />
+          </ListItemIcon>
+          <ListItemText primary="Delete Room" />
+        </ListItem>
+      </List>
+    ) : (
+      <List className={classes.lastElement}>
+        <ListItem button onClick={(e) => setLeaveDialogOpen(true)}>
+          <ListItemIcon>
+            <WarningIcon className={classes.red} />
+          </ListItemIcon>
+          <ListItemText primary="Leave Room" />
+        </ListItem>
+      </List>
+    );
 
   return (
     <div>
@@ -68,7 +107,7 @@ export default function MobileView({ roomObj, host }) {
 
             <ListItem
               button
-              disabled={username === host ? false : true}
+              disabled={username === host || admin ? false : true}
               className={classes.pink}
               onClick={handleKickOpen}
             >
@@ -81,7 +120,7 @@ export default function MobileView({ roomObj, host }) {
           <Divider className={classes.divider} />
 
           <List>
-            <ListItem button className={classes.green}>
+            <ListItem button onClick={handleOnlineUsersOpen} className={classes.green}>
               <ListItemIcon>
                 <EmojiPeopleIcon className={classes.green} />
               </ListItemIcon>
@@ -91,14 +130,7 @@ export default function MobileView({ roomObj, host }) {
         </div>
 
         <Divider className={classes.divider} />
-        <List className={classes.lastElement}>
-          <ListItem button onClick={(e) => setLeaveDialogOpen(true)}>
-            <ListItemIcon>
-              <WarningIcon className={classes.red} />
-            </ListItemIcon>
-            <ListItemText primary="Leave Room" />
-          </ListItem>
-        </List>
+        {actionButton}
       </SwipeableDrawer>
 
       <AddUserModal
@@ -118,6 +150,19 @@ export default function MobileView({ roomObj, host }) {
         handleModalClose={handleModalClose}
         openKickUserModal={openKickUserModal}
         roomObj={roomObj}
+      />
+
+      <DeleteRoomModal
+        handleModalClose={handleModalClose}
+        roomObj={roomObj}
+        username={username}
+        deleteDialogOpen={deleteDialogOpen}
+      />
+
+      <OnlineUsersModal 
+      onlineUsersOpen={onlineUsersOpen}
+      handleModalClose={handleModalClose}
+      onlineUsers={onlineUsers}
       />
     </div>
   );

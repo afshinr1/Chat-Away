@@ -22,13 +22,15 @@ function Chat() {
   const classes = useStyles();
   const [onlineUsers, setonlineUsers] = useState([]);
 
-  const username = JSON.parse(sessionStorage.getItem("user")).username;
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const username = user.username;
+  const profile_img = user.profile_img;
   const { room } = useParams();
   const roomObj = { roomType: type, host, roomName, uuid: room };
 
   useEffect(() => {
     /* ON CLICKING ON A ROOM, JOIN THE ROOM BY EMITING TO SERVER JOIN EVENT WITH USERNAME AND ROOM UUID*/
-    socket.emit("join", { username, room }, (error) => {
+    socket.emit("join", { username, room, profile_img }, (error) => {
       if (error) {
         alert(error);
         history.push("/");
@@ -39,14 +41,14 @@ function Chat() {
     return function cleanup() {
       socket.emit("leave room", username);
     };
-  }, [room, username]);
+  }, [room, username, profile_img]);
 
   useEffect(() => {
     /* SET THE ONLINE USERS ON THIS EVENT. GETS THIS EVENT WHEN FIRST JOINING A ROOM AND WHEN A USER LEAVES THE ROOM */
     let unmounted = false;
     socket.on("roomData", (data) => {
-      // console.log("Got room data");
-      // console.log(data);
+       console.log("Got room data");
+       console.log(data);
       if (!unmounted) setonlineUsers(data.users);
     });
 

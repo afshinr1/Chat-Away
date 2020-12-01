@@ -21,6 +21,8 @@ const {
   createRoomController,
   getPublicRoomsController,
   joinRoomController,
+  getAllRoomsController,
+  deleteRoomController,
   getMyRoomsController,
   leaveRoomController,
 } = require("./controllers/RoomController");
@@ -53,7 +55,7 @@ app.use("/", require("./routes"));
 
 /* New User connects to server */
 io.on("connection", (socket) => {
-
+    console.log("a user connected " + socket.id);
   /* Add user to all user list on first connect*/
   socket.on("connection", (username) => {
     console.log("on first connect", username);
@@ -79,6 +81,29 @@ io.on("connection", (socket) => {
       })
       .catch((err) => console.error(err));
   });
+
+  /* ADMIN FUNCTIONS */
+  /* Get all rooms for a user */
+  socket.on("get allRooms", (username, callback) => {
+    console.log("in get rooms for admin : " + username);
+    let result = getAllRoomsController();
+    result
+      .then((myRooms) => {
+        callback(myRooms);
+      })
+      .catch((err) => console.error(err));
+  });
+  socket.on("delete room", (roomObj, callback) => {
+    console.log(roomObj);
+    let room_uuid = roomObj.uuid;
+     let result = deleteRoomController(room_uuid);
+     result
+       .then((response) => {
+         callback(response);
+       })
+       .catch((err) => console.log(err));
+  });
+  /* END OF ADMIN FUNCTIONS */
 
   /* Create a room with a username */
   socket.on("create room", (obj, callback) => {
@@ -198,8 +223,8 @@ io.on("connection", (socket) => {
   /*** CHAT DATA ***/
   /* ON JOINING A NEW CHAT ROOM */
   socket.on("join", (event, callback) => {
-    let { username, room } = event;
-    const { error, user } = addUser({ id: socket.id, username, room });
+    let { username, room, profile_img } = event;
+    const { error, user } = addUser({ id: socket.id, username,profile_img, room });
 
     if (error) {
       return callback(error);
@@ -232,7 +257,12 @@ io.on("connection", (socket) => {
     // console.log(
     //   `server got message ${message} by ${message.username} in room ${user.room}`
     // );
-    let newMsg = createMessage(message.type, message.text, user.username, message.profilePic, );
+    let newMsg = createMessage(
+      message.type,
+      message.text,
+      user.username,
+      message.profilePic
+    );
     io.to(user.room).emit("message", newMsg);
   });
 

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Avatar, Box, Typography } from "@material-ui/core";
 import React, { } from "react";
 import "./RoomInfo.css";
 
@@ -9,13 +9,19 @@ function RoomInfo({ username, onlineUsers }) {
   const userList = onlineUsers.map((user) =>
     user.username === username ? (
       /* STYLES aPPLIED IF THIS USERNAME IS YOUR USERNAME */
-      <Typography variant="h4" color="primary" key={user.id}>
+      <div key={user.id} className='user-container'>
+        <Avatar src={user.profile_img} alt='' className='user-avatar' />
+      <Typography variant="h6" className='current-user' color="primary" >
         {user.username}
       </Typography>
+      </div>
     ) : (
-      <Typography variant="body1" key={user.id}>
+      <div key={user.id} className='user-container'>
+        <Avatar src={user.profile_img} alt='' className='user-avatar' />
+      <Typography variant="body1" >
         {user.username}
       </Typography>
+      </div>
     )
   );
 

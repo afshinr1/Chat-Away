@@ -2,7 +2,7 @@ const usersInRoom = [];
 const allUsers = [];
 
 /* ADD A USER WHEN THEY JOIN IN A CHAT ROOM */
-const addUser = ({ id, username, room }) => {
+const addUser = ({ id, username,profile_img, room }) => {
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
@@ -12,7 +12,7 @@ const addUser = ({ id, username, room }) => {
   if (existing) {
     return { error: "Userrname is taken" };
   } else {
-    const user = { id, username, room };
+    const user = { id, username,profile_img, room };
     usersInRoom.push(user);
     return { user };
   }

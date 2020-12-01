@@ -12,3 +12,18 @@
 .onlineUsers{
     margin: 10px;
 }
+
+.user-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-avatar{
+    margin-right: 10px;
+}
+
+.current-user {
+    text-decoration: underline;
+ 
+}
