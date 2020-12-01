@@ -19,7 +19,7 @@ function Login(props) {
       lastName: response.profileObj.familyName,
       profile_img: response.profileObj.imageUrl,
       google : true,
-      role: null,
+      role: 'User',
       username: response.profileObj.name.toLowerCase(),
     };
     props.handleLogin();

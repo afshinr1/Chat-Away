@@ -23,10 +23,11 @@ export const useStyles = makeStyles((theme) => ({
   },
   col2: {
     border: "2px solid #0C2340",
+    backgroundColor: "#ECECEC",
     padding: "0px 5px 5px",
   },
   col3: {
-    backgroundColor: "#F8F8FF",
+    backgroundColor : "#FEFEFE",
     border: "3px solid #0C2340",
   },
   col4: {

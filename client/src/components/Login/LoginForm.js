@@ -18,7 +18,7 @@ function LoginForm({ responseGoogle, handleValidate, message }) {
 
   return (
     <form className={classes.form}>
-      <Typography className={classes.white} variant="h4">Login Form</Typography>
+      <Typography className={classes.white} variant="h4">Chat Away Login</Typography>
       <Typography variant="body2" className={classes.error} gutterBottom>
         {message}
       </Typography>

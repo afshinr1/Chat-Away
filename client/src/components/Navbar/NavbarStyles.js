@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme) => ({
       display: "block",
     },
     color: "#FEFEFE",
+    
   },
   img_logo: {
     height: "3rem",
@@ -64,4 +65,9 @@ export const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
+  logout: {
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+  }
 }));

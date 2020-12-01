@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Input.css";
-import { Box, Button, IconButton } from "@material-ui/core";
+import { Box, Button, IconButton, TextField } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import DrawModal from "./DrawModal";
@@ -11,8 +11,12 @@ import { useStyles } from "./Styles";
 /* INPUT BAR TO SEND MESSAGES */
 function Input({ handleMessage }) {
   const classes = useStyles();
-  const profilePic = JSON.parse(sessionStorage.getItem('user')).profile_img;
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const admin = user.role === "Admin" ? true : false;
+  const profilePic = user.profile_img;
   const [message, setMessage] = useState("");
+
   const [open, setOpen] = React.useState(false);
   const [openEmoji, setOpenEmoji] = useState(false);
 
@@ -28,7 +32,7 @@ function Input({ handleMessage }) {
   /* SEND MESSAGE TO SERVER */
   const sendMessage = () => {
     if (message !== "") {
-      let msgObj = { type: "text", text: message, profilePic : profilePic };
+      let msgObj = { type: "text", text: message, profilePic: profilePic };
       handleMessage(msgObj);
       setMessage("");
     }
@@ -36,7 +40,7 @@ function Input({ handleMessage }) {
 
   /* SEND IMAGE TO SERVER */
   const handleImage = (image) => {
-    let msgObj = { type: "image", text: image, profilePic : profilePic };
+    let msgObj = { type: "image", text: image, profilePic: profilePic };
     handleMessage(msgObj);
   };
 
@@ -54,19 +58,33 @@ function Input({ handleMessage }) {
     setOpen(false);
   };
 
+  /*                                                                          */
+  /* ADMIN HAD NO FUNCTIONALITY HERE. ALL INPUTS DISABLED IF USER IS AN ADMIN */
+  /*                                                                          */
+
   return (
     <Box display="flex" component="div" className="input-form">
       {/* MAIN INPUT FOR SENDING TEXT MESSAGES */}
-      <input
+      <TextField
+        variant="outlined"
+        autoFocus
+        disabled={admin}
         onChange={(e) => setMessage(e.target.value)}
+        color="primary"
         value={message}
-        className="message-input"
+        className={classes.message_input}
+        placeholder="Write your message here"
         onKeyDown={handleEnter}
       />
 
+
       {/* RENDER EMOJI PICKER */}
       <div className="emoji-picker">
-        <IconButton className={classes.emojiBtn} onClick={handleEmojiShow}>
+        <IconButton
+          disabled={admin}
+          className={classes.emojiBtn}
+          onClick={handleEmojiShow}
+        >
           <EmojiEmotionsIcon />
         </IconButton>
         <div className={`picker ${openEmoji && "show"}`}>
@@ -80,6 +98,7 @@ function Input({ handleMessage }) {
         color="secondary"
         variant="contained"
         onClick={handleOpen}
+        disabled={admin}
       >
         Draw
       </Button>
@@ -95,6 +114,7 @@ function Input({ handleMessage }) {
         className="message-button"
         color="primary"
         variant="contained"
+        disabled={admin}
         startIcon={<SendIcon />}
         onClick={sendMessage}
       >

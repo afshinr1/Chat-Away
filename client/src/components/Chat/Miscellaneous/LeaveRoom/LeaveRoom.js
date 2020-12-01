@@ -42,10 +42,10 @@ export default function LeaveRoom({
         open={leaveDialogOpen}
       >
         <DialogTitle className={classes.title} onClose={handleModalClose}>
-          <Typography className={classes.red}>LEAVE ROOM</Typography>
+          <Typography className={classes.white}>LEAVE ROOM</Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Typography className={classes.red} gutterBottom>
+          <Typography className={classes.white} gutterBottom>
             By leaving this room, you consent that you may require an invite to
             join the room again. Click Leave if you wish to still proceed.
           </Typography>

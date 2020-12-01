@@ -3,10 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   outerContainer: {
     display: "flex",
-    border: "1px solid black",
+    border: "2px solid #062040",
+    borderRadius: "4px",
     flexDirection: "column",
     width: "50%",
     margin: "20px auto",
+    padding: "10px",
   },
   /* AVATAR AND IMAGE UPLOAD BTN START */
   imageContainer: {
