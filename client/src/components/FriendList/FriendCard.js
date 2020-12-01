@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { IconButton } from "@material-ui/core";
 import { useStyles } from "../Requests/RequestStyles";
 
+import { toast } from "react-toastify";
 import { socket } from "../Utilities/API";
 import { useSelector, useDispatch } from "react-redux";
 import { addFriend, removeFriend, setFriends } from "../../actions/MyFriendsActions";

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setRequests, addRequest, removeRequest } from "../../actions/RequestsActions";
 import { addFriend, removeFriend, setFriends } from "../../actions/MyFriendsActions";
 import RequestCard from "./RequestCard";
-import { toast } from "react-toastify";
+import { toast, Flip } from "react-toastify";
 import { useStyles } from "./RequestStyles";
 import { addRoom } from "../../actions/MyRoomsActions";
 
