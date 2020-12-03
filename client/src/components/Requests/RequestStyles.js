@@ -40,6 +40,13 @@ export const useStyles = makeStyles((theme) => ({
       '"Segoe UI Symbol"',
     ].join(","),
   },
+  friendList: {
+    display: "flex",
+    flexDirection: "column",
+    // flexWrap: "wrap",
+    // justifyContent: "center",
+    alignItems: "center",
+  },
 
   /* END MAIN REQUEST CONTAINER STYLES */
 

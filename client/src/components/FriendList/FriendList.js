@@ -98,7 +98,7 @@ function FriendList() {
         </Badge>
       </div>
 
-      <div className={classesRequest.friendList}>{friendList}</div>
+      {/* <div className={classesRequest.friendList}>{friendList}</div> */}
       
       {/* Add a new friend */}
       <div className={classes.addFriendSection}>
@@ -126,6 +126,9 @@ function FriendList() {
           </Button>
         </div>
       </div>
+
+      <div className={classesRequest.friendList}>{friendList}</div>
+
     </Box>
   );
 }
