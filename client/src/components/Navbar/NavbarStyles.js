@@ -10,14 +10,15 @@ export const useStyles = makeStyles((theme) => ({
   navbar: {
     backgroundColor: "#0C2340",
   },
+  toolbar : {
+    display : 'flex',
+    justifyContent : 'space-between'
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
+  
     color: "#FEFEFE",
     
   },
@@ -69,5 +70,22 @@ export const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-  }
+  },
+  slogan : {
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+      fontSize : '1.5rem',
+
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize : '2rem',
+    },
+    color : "#FFFFFF",
+    marginLeft : '3rem',
+    fontWeight : '500',
+    fontFamily : "Brush Script MT",
+  },
 }));
+
+

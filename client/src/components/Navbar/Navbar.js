@@ -2,10 +2,8 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import { useStyles } from "./NavbarStyles";
-import SearchIcon from "@material-ui/icons/Search";
-import { Button } from "@material-ui/core";
+import {  useStyles } from "./NavbarStyles";
+import { Box, Button } from "@material-ui/core";
 import { history } from "../Utilities/History";
 
 /* NAVBAR. NEED TO CHANGE STUFF AS NEEDED */
@@ -20,31 +18,28 @@ export default function Navbar() {
   return (
     <div>
       <AppBar position="static" className={classes.navbar}>
-        <Toolbar>
-          <img
-            className={classes.img_logo}
-            onClick={(e) => history.push("/")}
-            src={`${process.env.PUBLIC_URL}/images/logo.png`}
-            alt="Logo.png"
-          />
-          <Typography className={classes.title} variant="h6" noWrap>
-            Chat Away
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
+        <Toolbar className={classes.toolbar}>
+          <Box display='flex' alignItems='center'>
+            <img
+              className={classes.img_logo}
+              onClick={(e) => history.push("/")}
+              src={`${process.env.PUBLIC_URL}/images/logo.png`}
+              alt="Logo.png"
             />
-          </div>
-          <div className={classes.grow} />
-
-          <Button className={classes.logout} variant="outlined" color="inherit" onClick={handleLogout}>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Chat Away
+            </Typography>
+          </Box>
+          <Typography className={classes.slogan}>
+            "It takes two to have a conversation"
+          </Typography>
+          
+          <Button
+            className={classes.logout}
+            variant="outlined"
+            color="inherit"
+            onClick={handleLogout}
+          >
             Logout
           </Button>
         </Toolbar>

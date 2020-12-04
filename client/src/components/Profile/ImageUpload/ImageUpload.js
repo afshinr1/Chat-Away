@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button, Modal } from "@material-ui/core";
+import { Button, IconButton, Modal } from "@material-ui/core";
 import firebase from "../../Utilities/Firebase";
 import "./ImageUpload.css";
+import BackspaceIcon from '@material-ui/icons/Backspace';
 import { useStyles, getModalStyle } from "./Styles";
 
 const ImageUpload = ({ user, setUserPicture }) => {
@@ -18,6 +19,9 @@ const ImageUpload = ({ user, setUserPicture }) => {
     if (e.target.files[0]) setImage(e.target.files[0]);
   };
 
+  const handleRemove = () => {
+    setUserPicture(null);
+  }
   /* ONCLICK UPLOAD, STORE IN FIREBASE STORAGE AND  CALL NEW FUNCTION TO STORE NEW IMAGE URL IN DATABSE */
   const handleUpload = (e) => {
     if (image) {
@@ -81,6 +85,9 @@ const ImageUpload = ({ user, setUserPicture }) => {
       <Button color="primary" disabled={user.google ? true : false} variant="contained" onClick={() => setOpen(true)}>
         Upload
       </Button>
+      <IconButton onClick={handleRemove} className={classes.red}>
+        <BackspaceIcon />
+      </IconButton>
     </div>
   );
 };

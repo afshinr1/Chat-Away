@@ -1,4 +1,4 @@
-import { fade, makeStyles } from "@material-ui/core/styles";
+import {  makeStyles } from "@material-ui/core/styles";
 import { blue, green, red } from "@material-ui/core/colors";
 
 export const useStyles = makeStyles((theme) => ({
@@ -29,10 +29,10 @@ export const useStyles = makeStyles((theme) => ({
 search: {
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  color: "#FEFEFE",
-  backgroundColor: fade(theme.palette.common.black, 0.70),
+  color: "#000000",
+  backgroundColor: '#ACE5FF',
   "&:hover": {
-    backgroundColor: fade(theme.palette.common.black, 0.80),
+    backgroundColor: '#B1D2FB',
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
@@ -48,7 +48,7 @@ searchIcon: {
   height: "100%",
   position: "absolute",
   pointerEvents: "none",
-  color : '#FEFEFE',
+  color : '#000000',
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

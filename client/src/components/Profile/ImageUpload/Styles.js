@@ -17,4 +17,7 @@ import { makeStyles } from "@material-ui/core";
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
+    red: {
+      color : '#FF0000'
+    }
   }));
