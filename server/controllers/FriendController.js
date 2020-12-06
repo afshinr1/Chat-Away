@@ -7,7 +7,7 @@ const getFriendsController = async (username) => {
   return response;
 };
 
-/* Get all friend requests of user */
+/* Get all friend requests of user. NOT USED CURRENTLY */
 const getFriendRequestsController = async (username) => {
   const response = await getFriendRequests(username);
   return response;

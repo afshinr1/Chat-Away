@@ -14,7 +14,8 @@ function RegisterForm({ handleRegister, message }) {
   const classes = useStyles();
 
   const validateRegister = () => {
-    handleRegister(username, email, firstName, lastName, password);
+    let newUsername = username.trim().toLowerCase();
+    handleRegister(newUsername, email, firstName, lastName, password);
   };
 
   return (

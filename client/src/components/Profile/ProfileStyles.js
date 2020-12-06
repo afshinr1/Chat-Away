@@ -6,6 +6,10 @@ export const useStyles = makeStyles((theme) => ({
     border: "2px solid #062040",
     borderRadius: "4px",
     flexDirection: "column",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+
     width: "50%",
     margin: "20px auto",
     padding: "10px",

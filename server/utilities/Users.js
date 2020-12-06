@@ -1,5 +1,5 @@
-const usersInRoom = [];
-const allUsers = [];
+let usersInRoom = [];
+let allUsers = [];
 
 /* ADD A USER WHEN THEY JOIN IN A CHAT ROOM */
 const addUser = ({ id, username,profile_img, room }) => {
@@ -40,21 +40,23 @@ const getUsersInRoom = (room) => {
 
 /* ADD A USER WHEN THEY FIRST CONNECT TO MAIN APP */
 const addUserAll = (id, username) => {
+  username = username.trim().toLowerCase();
   const user = { id, username };
   allUsers.push(user);
 };
 
 /* REMOVE A USER WHEN THEY DISCONNECT CONNECT FROM MAIN APP */
 const removeUserAll = (id) => {
-  const index = allUsers.findIndex((user) => id === user.id);
-  if (index !== -1) {
-    return allUsers.splice(index, 1)[0];
-  }
+  allUsers = allUsers.filter(user => user.id !== id);
+  // const index = allUsers.findIndex((user) => id === user.id);
+  // if (index !== -1) {
+  //   return allUsers.splice(index, 1)[0];
+  // }
 };
 
 /* GET SOCKET ID WITH USERNAME, USED FOR SENDING NOTIFICATION TO SEPCIFIC USERNAME USING THEIR SOCKET ID */
 const getIdByUsername = (username) => {
-  // console.log(allUsers)
+  console.log(allUsers, username);
   let targetUser = "";
   allUsers.forEach((user) => {
     if (user.username === username) {

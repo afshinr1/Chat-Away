@@ -9,10 +9,10 @@ import Typography from "@material-ui/core/Typography";
 import { IconButton } from "@material-ui/core";
 import { useStyles } from "./RequestStyles";
 
-/* REQUEST CARD COMPONENT. (PRIMARILY USED FOR ROOMS)*/
+/* REQUEST CARD COMPONENT.*/
 export default function RequestCard({ data, type, handleAdd, handleCancel }) {
   const classes = useStyles();
-
+  /* HAVE A DIFFERENT CARD CONTENT FOR EACH DIFFERENT REQUEST TYPE. ROOM, FRIEND, CHAT */
   let cardContent = null;
   if (type === "room") {
     cardContent = (
@@ -25,23 +25,36 @@ export default function RequestCard({ data, type, handleAdd, handleCancel }) {
         </Typography>
       </CardContent>
     );
-  }
-  else if (type === "friend") {
+  } else if (type === "friend") {
     cardContent = (
       <CardContent>
         <Typography gutterBottom variant="body1" component="h2">
-          { data.friend } wants to be your friend.
+          {data.user} wants to be your friend.
         </Typography>
       </CardContent>
     );
   }
+  else if (type === "chat") {
+    cardContent = (
+      <CardContent>
+        <Typography gutterBottom variant="body1" component="h2">
+          {data.username} Invited to private chat
+        </Typography>
+      </CardContent>
+    );
+  }
+  let image = '';
+  if(type === 'friend') image = "/images/friend.png";
+  else if (type === 'chat') image = "/images/chat.png";
+  else if (type === 'room') image = "/images/group.png";
+  
 
   return (
     <div className={classes.card_container}>
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
-          image={ type === 'friend' ? "/images/friend.png" : "/images/group.png"}
+          image={image}
           title="New Request"
         >
           <Typography
@@ -54,7 +67,7 @@ export default function RequestCard({ data, type, handleAdd, handleCancel }) {
           </Typography>
         </CardMedia>
 
-        { cardContent }
+        {cardContent}
 
         <CardActions className={classes.action}>
           <IconButton
@@ -65,7 +78,7 @@ export default function RequestCard({ data, type, handleAdd, handleCancel }) {
           </IconButton>
           <IconButton
             className={`${classes.cancel_icon} ${classes.scale}`}
-            onClick={e=> handleCancel(data.requestId)}
+            onClick={(e) => handleCancel(data)}
           >
             <CancelIcon />
           </IconButton>

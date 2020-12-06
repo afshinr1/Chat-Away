@@ -1,5 +1,5 @@
 import { Box, Grid } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Public from "../Public/Public";
 import Meet from "../Meet/Meet";
 import Navbar from "../Navbar/Navbar";
@@ -8,10 +8,7 @@ import { useStyles } from "./HomeStyles";
 
 import { socket } from "../Utilities/API";
 import Requests from "../Requests/Requests";
-import FriendList from "../FriendList/FriendList";
 import { useDispatch } from "react-redux";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import { Flip, toast } from "react-toastify";
 import { addRequest } from "../../actions/RequestsActions";
 import { addFriend } from "../../actions/MyFriendsActions";
@@ -22,7 +19,6 @@ function Home() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const username = JSON.parse(sessionStorage.getItem("user")).username;
-  const [showFriends, setShowFriends] = useState(true);
 
   useEffect(() => {
     /* ON FIRST JOINING THE APPLICATION, TELL SERVER USER HAS CONNECTED AND SAVE USERNAME DATA */
@@ -40,15 +36,33 @@ function Home() {
       dispatch(addRequest(obj));
     });
 
+  
     /* ON A FRIEND REQUEST BEING RECEIVED, ADD FRIEND REQUEST TO REQUEST LIST */
-    socket.on("friend request", (username) => {
+    socket.on("friend request", (obj) => {
+     // console.log(obj);
+      const { username } = obj;
       toast.dark("New friend request from " + username, {
-        toastId: username,
+        toastId: obj.requestId,
         transition: Flip,
       });
-      // TODO: create dispatch(addFriendRequest(obj));
+      obj.user = username;
+
+      dispatch(addRequest(obj));
     });
 
+    /* ON A CHAT REQUEST BEING RECEIVED, ADD Chat REQUEST TO REQUEST LIST */
+    socket.on("chat request", (obj) => {
+      // console.log(obj);
+      const { username } = obj;
+      toast.dark("New chat request from " + username, {
+        toastId: obj.requestId,
+        transition: Flip,
+      });
+
+      dispatch(addRequest(obj));
+    });
+
+    /* NOT USED CURRENTLY */
     /* ON A FRIEND REQUEST BEING ACCEPTED, ADD FRIEND TO FRIEND LIST */
     socket.on("friend request accepted", (friend) => {
       toast.dark(`${friend.username} accepted your friend request!`, {
@@ -57,19 +71,7 @@ function Home() {
       });
       dispatch(addFriend(friend));
     });
-
   }, [dispatch]);
-
-  const handleChange = (event, value) => {
-    setShowFriends(value === 0);
-  };
-
-  const toggleTabs = (
-    <Tabs value={showFriends ? 0 : 1} onChange={handleChange}>
-      <Tab label="Friends" />
-      <Tab label="Requests" />
-    </Tabs>
-  );
 
   return (
     <Box component="div" width="fullWidth" className={classes.outerContainer}>
@@ -79,8 +81,7 @@ function Home() {
       <Grid container className={classes.innerContainer}>
         {/* COL 1 : Leftmost component, FriendList, notifications etc...*/}
         <Grid item xs={12} md={3} className={classes.col1}>
-          {toggleTabs}
-          {showFriends ? <FriendList /> : <Requests />}
+          <Requests />
         </Grid>
 
         {/*COL 2 : Room list, add a new room */}

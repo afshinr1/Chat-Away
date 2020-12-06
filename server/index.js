@@ -30,7 +30,6 @@ const {
   getFriendsController,
   addFriendController,
   removeFriendController,
-  getFriendRequestsController,
 } = require("./controllers/FriendController");
 const { createMessage } = require("./utilities/Messages");
 const { create } = require("domain");
@@ -94,7 +93,6 @@ io.on("connection", (socket) => {
       .catch((err) => console.error(err));
   });
   socket.on("delete room", (roomObj, callback) => {
-    console.log(roomObj);
     let room_uuid = roomObj.uuid;
      let result = deleteRoomController(room_uuid);
      result
@@ -144,11 +142,14 @@ io.on("connection", (socket) => {
   /* END OF ROOMS */
 
   /*** FRIENDS ***/
+
+
+  /*** FRIENDS ***/
+  /* GET ALL FRIENDS FOR A USER */
   socket.on("get friends", (username, callback) => {
     console.log("in get friends for user : " + username);
     getFriendsController(username)
       .then((res) => {
-        console.log(res);
         callback(res);
       })
       .catch((err) => {
@@ -156,38 +157,26 @@ io.on("connection", (socket) => {
       });
   });
 
-  socket.on("add friend", ({ username, friend, isFriendRequest }, callback) => {
+  /* SEND FRIEND REQUEST FROM ONE USER TO ANOTHER USER */
+  socket.on("add friend", (obj, callback) => {
+    const { username, friend } = obj;
     console.log(`${username} is adding ${friend} as a friend`);
 
-    if (username === friend) {
-      callback("you cannot be your own friend");
-      return;
-    }
-
-    const user = getUserController(friend);
-    if (user === null) {
-      callback("this user does not exist");
-    }
-
-    addFriendController(username, friend).then((addedFriend) => {
-      if (addedFriend) {
-        callback("OK");
-
-        if (isFriendRequest) {
-          // if friend is online, send them a notification
-          const targetUser = getIdByUsername(friend);
-          if (targetUser !== "") {
-            io.to(targetUser.id).emit("friend request", username);
-          }
-        }
+    let targetUser = getIdByUsername(friend);
+    if (targetUser !== "") {
+      let targetId = targetUser.id;
+      let targetUsername = targetUser.username;
+      if (targetUsername === username) {
+        callback("you cannot be your own friend");
       } else {
-        callback(
-          "you are already friends or have already sent a friend request to this user"
-        );
+        callback("OK");
+        io.to(targetId).emit("friend request", obj);
       }
-    });
+    } else {
+      callback("User not online!");
+    }
   });
-
+  /* REMOVE A FRIEND */
   socket.on("remove friend", ({ username, friend }, callback) => {
     console.log(`${username} is removing ${friend} as a friend`);
     let result = removeFriendController(username, friend);
@@ -197,31 +186,35 @@ io.on("connection", (socket) => {
       })
       .catch((err) => console.error(err));
   });
-
-  // only fetches friend requests from the DB
-  socket.on("get requests", (username, callback) => {
-    console.log("in get friend requests for user : " + username);
-    getFriendRequestsController(username)
-      .then((res) => {
-        console.log(res);
-
-        let friendRequests = [];
-        if (res !== null) {
-          friendRequests = res.map((x) => ({
-            ...x,
-            type: "friend",
-          }));
-        }
-        callback(friendRequests);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  /* ACCEPT A FRIEND REQUEST */
+  socket.on("accept friend", (data, callback) => {
+    const { username, friend } = data;
+    let result = addFriendController(username, friend);
+    result.then((response) => {
+      if (response === true) {
+        callback("OK");
+      }
+    });
   });
   /*** END OF FRIENDS ***/
 
   /*** CHAT DATA ***/
   /* ON JOINING A NEW CHAT ROOM */
+
+  socket.on("private chat", (obj, callback) => {
+    const { friend } = obj;
+    console.log("private chat");
+
+    let targetUser = getIdByUsername(friend);
+    if (targetUser !== "") {
+      let targetId = targetUser.id;
+      callback("OK");
+      io.to(targetId).emit("chat request", obj);
+    } else {
+      callback("User not online!");
+    }
+  });
+
   socket.on("join", (event, callback) => {
     let { username, room, profile_img } = event;
     const { error, user } = addUser({ id: socket.id, username,profile_img, room });

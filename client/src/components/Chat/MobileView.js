@@ -16,9 +16,9 @@ import AddUserModal from "./Miscellaneous/AddUser/AddUserModal";
 import LeaveRoom from "./Miscellaneous/LeaveRoom/LeaveRoom";
 import KickUserModal from "./Miscellaneous/KickUser/KickUserModal";
 import ErrorIcon from "@material-ui/icons/Error";
-import OnlineUsersModal from './OnlineUsers/OnlineUsersModal';
+import OnlineUsersModal from "./OnlineUsers/OnlineUsersModal";
 import DeleteRoomModal from "./Miscellaneous/DeleteRoom/DeleteRoomModal";
-export default function MobileView({ roomObj, host, onlineUsers }) {
+export default function MobileView({ roomObj, host, onlineUsers, type }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -38,7 +38,6 @@ export default function MobileView({ roomObj, host, onlineUsers }) {
   const handleOnlineUsersOpen = (e) => {
     setonlineUsersOpen(true);
   };
-
 
   /* OPEN KICK USER MODAL */
   const handleKickOpen = (e) => {
@@ -66,7 +65,11 @@ export default function MobileView({ roomObj, host, onlineUsers }) {
   const actionButton =
     user.role === "Admin" ? (
       <List className={classes.lastElement}>
-        <ListItem button onClick={handleDeleteOpen}>
+        <ListItem
+          button
+          disabled={type === "chat" ? true : false}
+          onClick={handleDeleteOpen}
+        >
           <ListItemIcon>
             <ErrorIcon className={classes.red} />
           </ListItemIcon>
@@ -75,7 +78,11 @@ export default function MobileView({ roomObj, host, onlineUsers }) {
       </List>
     ) : (
       <List className={classes.lastElement}>
-        <ListItem button onClick={(e) => setLeaveDialogOpen(true)}>
+        <ListItem
+          button
+          disabled={type === "chat" ? true : false}
+          onClick={(e) => setLeaveDialogOpen(true)}
+        >
           <ListItemIcon>
             <WarningIcon className={classes.red} />
           </ListItemIcon>
@@ -98,7 +105,12 @@ export default function MobileView({ roomObj, host, onlineUsers }) {
       >
         <div className={classes.list}>
           <List>
-            <ListItem button className={classes.blue} onClick={handleAddOpen}>
+            <ListItem
+              button
+              disabled={type === "chat" ? true : false}
+              className={classes.blue}
+              onClick={handleAddOpen}
+            >
               <ListItemIcon>
                 <GroupAddIcon className={classes.blue} />
               </ListItemIcon>
@@ -120,7 +132,11 @@ export default function MobileView({ roomObj, host, onlineUsers }) {
           <Divider className={classes.divider} />
 
           <List>
-            <ListItem button onClick={handleOnlineUsersOpen} className={classes.green}>
+            <ListItem
+              button
+              onClick={handleOnlineUsersOpen}
+              className={classes.green}
+            >
               <ListItemIcon>
                 <EmojiPeopleIcon className={classes.green} />
               </ListItemIcon>
@@ -159,10 +175,10 @@ export default function MobileView({ roomObj, host, onlineUsers }) {
         deleteDialogOpen={deleteDialogOpen}
       />
 
-      <OnlineUsersModal 
-      onlineUsersOpen={onlineUsersOpen}
-      handleModalClose={handleModalClose}
-      onlineUsers={onlineUsers}
+      <OnlineUsersModal
+        onlineUsersOpen={onlineUsersOpen}
+        handleModalClose={handleModalClose}
+        onlineUsers={onlineUsers}
       />
     </div>
   );

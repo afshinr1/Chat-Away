@@ -1,5 +1,4 @@
 import {  makeStyles } from "@material-ui/core/styles";
-import { blue, green, red } from "@material-ui/core/colors";
 
 export const useStyles = makeStyles((theme) => ({
   /* Homepage Room column styles */
@@ -12,14 +11,14 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   avatar: {
-    backgroundColor: blue[500],
+    backgroundColor:'#42a5f5',
   },
   iconBtn : {
-    color : green[500],
+    color :'#4caf50',
     transform : 'scale(1.1)'
   },
   iconBtnErr : {
-    color : red[500],
+    color : '#f44336',
     transform : 'scale(1.1)'
 
   },

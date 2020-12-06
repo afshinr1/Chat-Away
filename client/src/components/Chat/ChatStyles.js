@@ -27,6 +27,14 @@ export const useStyles = makeStyles((theme) => ({
     width: "10%",
     margin: "10px 50px 10px 10px",
   },
+  roomName : {
+    fontFamily : "Roboto",
+    [theme.breakpoints.up('sm')]: {
+      fontSize : '1.6rem',
+    },
+    fontSize : '1rem',
+
+  },
   /* END MAIN CHAT CONTAINER STYLES STYLES */
 
   /* COLUMN BORDER STYLES */

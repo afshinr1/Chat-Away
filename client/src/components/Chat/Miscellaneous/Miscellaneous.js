@@ -10,9 +10,8 @@ import KickUserModal from "./KickUser/KickUserModal";
 import ErrorIcon from "@material-ui/icons/Error";
 import DeleteRoomModal from "./DeleteRoom/DeleteRoomModal";
 
-
 /* COMPONENT FOR CONTAINER OF ADD USER AND KICK USER */
-function Miscellaneous({ onlineUsers, host, roomObj }) {
+function Miscellaneous({ onlineUsers, host, roomObj, type }) {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const username = user.username;
   const admin = user.role === "Admin" ? true : false;
@@ -53,6 +52,7 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
         variant="outlined"
         onClick={(e) => handleDeleteOpen()}
         startIcon={<ErrorIcon />}
+        disabled={type === "chat" ? true : false}
         className={classes.deleteBtn}
       >
         Delete
@@ -61,6 +61,8 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
       <LeaveButton
         startIcon={<WarningIcon />}
         onClick={(e) => setLeaveDialogOpen(true)}
+        disabled={type === "chat" ? true : false}
+
         variant="outlined"
       >
         Leave
@@ -73,6 +75,7 @@ function Miscellaneous({ onlineUsers, host, roomObj }) {
       <IconButton
         size="medium"
         className={classes.addBtn}
+        disabled={type === "chat" ? true : false}
         color="primary"
         onClick={handleAddOpen}
       >

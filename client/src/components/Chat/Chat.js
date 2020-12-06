@@ -47,8 +47,8 @@ function Chat() {
     /* SET THE ONLINE USERS ON THIS EVENT. GETS THIS EVENT WHEN FIRST JOINING A ROOM AND WHEN A USER LEAVES THE ROOM */
     let unmounted = false;
     socket.on("roomData", (data) => {
-       console.log("Got room data");
-       console.log(data);
+      //  console.log("Got room data");
+      //  console.log(data);
       if (!unmounted) setonlineUsers(data.users);
     });
 
@@ -74,7 +74,7 @@ function Chat() {
       <Box component="div" className={classes.mainHeader}>
         {/*  SHOW MOBILE MENU WHEN SCREEN SIZE GETS SMALL */}
         <Hidden mdUp>
-          <MobileView roomObj={roomObj} host={host} onlineUsers={onlineUsers} />
+          <MobileView type={type} roomObj={roomObj} host={host} onlineUsers={onlineUsers} />
         </Hidden>
 
         <BackButton
@@ -85,7 +85,7 @@ function Chat() {
         >
           Back
         </BackButton>
-        <Typography color="inherit" display="inline" variant="h5">
+        <Typography color="inherit" display="inline" className={classes.roomName} >
           Room Name : {roomName}
         </Typography>
       </Box>
@@ -100,6 +100,7 @@ function Chat() {
               onlineUsers={onlineUsers}
               host={host}
               roomObj={roomObj}
+              type ={type}
             />
           </Grid>
         </Hidden>
@@ -109,7 +110,7 @@ function Chat() {
           <ChatContainer username={username} />
         </Grid>
 
-        {/*COL 3:  RENDER ALL PEOPLE IN ROOM?*/}
+        {/*COL 3:  RENDER ALL PEOPLE IN ROOM */}
         <Hidden smDown>
           <Grid item xs={2} className={classes.col3}>
             <RoomInfo onlineUsers={onlineUsers} username={username} />
