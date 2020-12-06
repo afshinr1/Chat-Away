@@ -54,7 +54,7 @@ app.use("/", require("./routes"));
 
 /* New User connects to server */
 io.on("connection", (socket) => {
-    console.log("a user connected " + socket.id);
+  console.log("a user connected " + socket.id);
   /* Add user to all user list on first connect*/
   socket.on("connection", (username) => {
     console.log("on first connect", username);
@@ -94,12 +94,12 @@ io.on("connection", (socket) => {
   });
   socket.on("delete room", (roomObj, callback) => {
     let room_uuid = roomObj.uuid;
-     let result = deleteRoomController(room_uuid);
-     result
-       .then((response) => {
-         callback(response);
-       })
-       .catch((err) => console.log(err));
+    let result = deleteRoomController(room_uuid);
+    result
+      .then((response) => {
+        callback(response);
+      })
+      .catch((err) => console.log(err));
   });
   /* END OF ADMIN FUNCTIONS */
 
@@ -142,7 +142,6 @@ io.on("connection", (socket) => {
   /* END OF ROOMS */
 
   /*** FRIENDS ***/
-
 
   /*** FRIENDS ***/
   /* GET ALL FRIENDS FOR A USER */
@@ -217,7 +216,12 @@ io.on("connection", (socket) => {
 
   socket.on("join", (event, callback) => {
     let { username, room, profile_img } = event;
-    const { error, user } = addUser({ id: socket.id, username,profile_img, room });
+    const { error, user } = addUser({
+      id: socket.id,
+      username,
+      profile_img,
+      room,
+    });
 
     if (error) {
       return callback(error);
@@ -260,9 +264,11 @@ io.on("connection", (socket) => {
   });
 
   /* User Leaves a room. remove from user list who are in rooms*/
-  socket.on("leave room", (username) => {
+  socket.on("leave room", (room) => {
     console.log("A user has left");
     const user = removeUser(socket.id);
+    socket.leave(room);
+
     if (user) {
       let message = createMessage("text", `${user.username} has left`, "admin");
       io.to(user.room).emit("message", message);
@@ -327,6 +333,10 @@ io.on("connection", (socket) => {
 
   /* END OF CHAT DATA */
 
+  socket.on("logout", (username) => {
+    removeUserAll(socket.id);
+     removeUser(socket.id);
+  });
   /** On user disconnect */
   socket.on("disconnect", () => {
     console.log("A user disconected");

@@ -5,13 +5,15 @@ import Typography from "@material-ui/core/Typography";
 import {  useStyles } from "./NavbarStyles";
 import { Box, Button } from "@material-ui/core";
 import { history } from "../Utilities/History";
-
+import {socket} from '../Utilities/API'
 /* NAVBAR. NEED TO CHANGE STUFF AS NEEDED */
 export default function Navbar() {
+  const username = JSON.parse(sessionStorage.getItem('user')).username;
   const classes = useStyles();
 
   const handleLogout = () => {
     sessionStorage.removeItem("user");
+    socket.emit('logout', username);
     history.push("/login");
   };
 

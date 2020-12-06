@@ -5,7 +5,6 @@ let allUsers = [];
 const addUser = ({ id, username,profile_img, room }) => {
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
-
   const existing = usersInRoom.find(
     (user) => user.room === room && user.username === username
   );
@@ -14,6 +13,8 @@ const addUser = ({ id, username,profile_img, room }) => {
   } else {
     const user = { id, username,profile_img, room };
     usersInRoom.push(user);
+   // console.log(usersInRoom);
+
     return { user };
   }
 };
@@ -42,7 +43,14 @@ const getUsersInRoom = (room) => {
 const addUserAll = (id, username) => {
   username = username.trim().toLowerCase();
   const user = { id, username };
-  allUsers.push(user);
+  const existing = allUsers.find(
+    (user) => user.username === username && user.id === id
+  );
+  if (existing) {
+    return { error: "Userrname is taken" };
+  } else {
+    allUsers.push(user);  }
+
 };
 
 /* REMOVE A USER WHEN THEY DISCONNECT CONNECT FROM MAIN APP */

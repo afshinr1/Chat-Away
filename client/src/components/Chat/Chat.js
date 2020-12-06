@@ -78,7 +78,10 @@ function Chat() {
         </Hidden>
 
         <BackButton
-          onClick={(e) => history.goBack()}
+          onClick={(e) =>{
+            socket.emit("leave room", room);
+            history.goBack()}
+          }
           variant="outlined"
           className={classes.btn}
           startIcon={<ArrowBackIcon />}
