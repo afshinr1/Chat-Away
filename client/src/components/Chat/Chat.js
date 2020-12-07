@@ -39,7 +39,7 @@ function Chat() {
 
     /* ON LEAVING ROOM, TELL SERVER THIS USERNAME TO LEAVE ROOM */
     return function cleanup() {
-      socket.emit("leave room", username);
+      socket.emit("leave room", room);
     };
   }, [room, username, profile_img]);
 
@@ -78,9 +78,7 @@ function Chat() {
         </Hidden>
 
         <BackButton
-          onClick={(e) =>{
-            socket.emit("leave room", room);
-            history.goBack()}
+          onClick={(e) =>{history.goBack()}
           }
           variant="outlined"
           className={classes.btn}

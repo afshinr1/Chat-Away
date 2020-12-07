@@ -13,14 +13,14 @@ const addUser = ({ id, username,profile_img, room }) => {
   } else {
     const user = { id, username,profile_img, room };
     usersInRoom.push(user);
-   // console.log(usersInRoom);
+  //  console.log(usersInRoom);
 
     return { user };
   }
 };
-
 /* REMOVE A USER FROM A CHAT ROOM ONCE HE LEAVES A ROOM OR DISCONNECTS */
 const removeUser = (id) => {
+
   const index = usersInRoom.findIndex((user) => id === user.id);
   if (index !== -1) {
     return usersInRoom.splice(index, 1)[0];
