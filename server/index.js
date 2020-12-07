@@ -267,18 +267,22 @@ io.on("connection", (socket) => {
   socket.on("leave room", (room) => {
     console.log("A user has left");
     const user = removeUser(socket.id);
-    socket.leave(room);
+    socket.leave(room, () => {
+      if (user) {
+        let message = createMessage(
+          "text",
+          `${user.username} has left`,
+          "admin"
+        );
+        io.to(user.room).emit("message", message);
 
-    if (user) {
-      let message = createMessage("text", `${user.username} has left`, "admin");
-      io.to(user.room).emit("message", message);
-
-      /* SEND ROOM DATA TO EVERYONE IN ROOM WHEN NEW USER LEAVES.  NOT YET IMPLEMENTED IN CLIENT SIDE */
-      io.to(user.room).emit("roomData", {
-        room: user.room,
-        users: getUsersInRoom(user.room),
-      });
-    }
+        /* SEND ROOM DATA TO EVERYONE IN ROOM WHEN NEW USER LEAVES.  NOT YET IMPLEMENTED IN CLIENT SIDE */
+        io.to(user.room).emit("roomData", {
+          room: user.room,
+          users: getUsersInRoom(user.room),
+        });
+      }
+    });
   });
 
   /* REQUEST TO ADD USER TO ROOM. SEND NOTIFICATION TO TARGET USER IF ONLINE/EXISTS IN ALLUSRES ONLINE */
@@ -335,7 +339,7 @@ io.on("connection", (socket) => {
 
   socket.on("logout", (username) => {
     removeUserAll(socket.id);
-     removeUser(socket.id);
+    removeUser(socket.id);
   });
   /** On user disconnect */
   socket.on("disconnect", () => {
