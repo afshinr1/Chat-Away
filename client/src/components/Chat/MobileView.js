@@ -166,6 +166,7 @@ export default function MobileView({ roomObj, host, onlineUsers, type }) {
         handleModalClose={handleModalClose}
         openKickUserModal={openKickUserModal}
         roomObj={roomObj}
+        onlineUsers = {onlineUsers}
       />
 
       <DeleteRoomModal

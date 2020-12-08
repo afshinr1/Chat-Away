@@ -1,6 +1,7 @@
 import {TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/styles";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 export const useStyles = makeStyles((theme) => ({
     btn: {
@@ -58,10 +59,16 @@ export const useStyles = makeStyles((theme) => ({
 
 /* Style input text field in modal */
 export const AddUserTextField = withStyles({
+  borderBottomColor : 'white',
+
   root: {
     margin : '10px',
+    
     "& input": {
       color: "white",
+    },
+    "& hover": {
+      borderBottomColor : 'white'
     },
     "& label": {
       color: "#FEFEFE",
@@ -93,3 +100,20 @@ export function getModalStyle() {
     transform: `translate(-${top}%, -${left}%)`,
   };
 }
+
+
+/* STyles AUTOCOMPLETE INPUT */
+
+export const StyledAutocomplete = withStyles({
+  root: {
+  
+  },
+  popupIndicator : {
+    color : "#FEFEFE",
+  },
+  clearIndicator : {
+    color : '#FEFEFE',
+  }
+})(Autocomplete);
+/* END of styled input text field in modal */
+

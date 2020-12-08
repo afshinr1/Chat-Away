@@ -115,6 +115,7 @@ function Miscellaneous({ onlineUsers, host, roomObj, type }) {
         handleModalClose={handleModalClose}
         openKickUserModal={openKickUserModal}
         roomObj={roomObj}
+        onlineUsers={onlineUsers}
       />
 
       <DeleteRoomModal
