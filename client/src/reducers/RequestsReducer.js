@@ -6,15 +6,15 @@ export const RequestsReducer = (state = initialState, action) => {
     case "SET_REQUESTS":
       return {
         ...state,
-        requests: [...action.payload]
+        requests: [...action.payload],
       };
 
-      case "ADD_MULTIPLE_REQUESTS":
-        return{
-          ...state,
-          requests: [...action.payload, ...state.requests]
-        }
-    
+    case "ADD_MULTIPLE_REQUESTS":
+      return {
+        ...state,
+        requests: [...action.payload, ...state.requests],
+      };
+
     case "ADD_REQUEST":
       const requestId = action.payload.requestId;
       const idList = state.requests.map((req) => req.requestId);
@@ -37,6 +37,11 @@ export const RequestsReducer = (state = initialState, action) => {
         ),
       };
 
+    case "REMOVE_ALL_REQUESTS":
+      return {
+        ...state,
+        requests: [],
+      };
     default:
       return state;
   }

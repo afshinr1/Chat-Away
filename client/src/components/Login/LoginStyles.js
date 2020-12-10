@@ -32,7 +32,7 @@ export const useStyles = makeStyles((theme) => ({
       flexDirection: "column",
       justifyContent: "center",
     },
-    height: "100vh",
+    minHeight: "100vh",
     width: "100vw",
     backgroundColor: "#1E1E2F",
     color: "#FEFEFE",

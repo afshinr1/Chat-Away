@@ -18,3 +18,8 @@ export const appendRequests = (requests) => {
 export const removeRequest = (id) => {
   return { type: "REMOVE_REQUEST", payload: id };
 };
+
+/* Remove all requests from global state requests */
+export const removeAllRequests = () => {
+  return {type : "REMOVE_ALL_REQUESTS"};
+}
