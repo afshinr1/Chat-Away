@@ -47,7 +47,7 @@ function DrawModal({ handleImage, open, handleClose }) {
         <IconButton className={classes.icon} onClick={handleClose}>
           <CloseIcon />
         </IconButton>
-        <DrawingBoard style={drawingStyles} onSave={handleSave} />
+        <DrawingBoard style={drawingStyles} toolbarPlacement='left' onSave={handleSave} />
       </div>
     </Modal>
   );

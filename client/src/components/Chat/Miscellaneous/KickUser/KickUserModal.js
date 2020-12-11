@@ -17,6 +17,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useState } from "react";
 import { socket } from "../../../Utilities/API";
+import { v4 } from "uuid";
 /* INVITE USER TO A ROOM MODAL COMPONENT */
 function KickUserModal({
   openKickUserModal,
@@ -35,7 +36,8 @@ function KickUserModal({
   /* HANDLE KICKING USER FROM THE ROOM */
   const handleKickUser = (e) => {
     let newInput = value.trim();
-    const msg = { username: newInput, roomObj, requestedBy: username };
+    const id = v4();
+    const msg = { id:id, username: newInput, roomObj, requestedBy: username };
     if (newInput) {
       socket.emit("kick user from room", msg, (response) => {
         /* SERVER RESPONSE */

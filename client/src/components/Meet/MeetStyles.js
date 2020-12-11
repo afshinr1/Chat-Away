@@ -6,13 +6,31 @@ export const useStyles = makeStyles((theme) => ({
     meet_container : {
         position : 'relative',
         backgroundColor : "#FEFEFE",
+        dsplay : 'flex',
+       // textAlign : "center",
+        flexDirection : "column",
+        boxSizing : 'border-box'
 
     },
+    top_half : {
+      justifyContent : 'center',
+      alignItems : 'center',
+      textAlign : 'center',
+    },
+    bottom_half : {
+      display : 'flex',
+      paddingTop : '50px',
+      paddingBottom : '20px',
+      height : "50%",
+      justifyContent : 'center',
+      alignItems : "center",
+
+     },
     speechIcon : {
         position :'absolute',
         top : '-20px',
         right : "-10px",
-        color : '#303030',
+        color : '#0C2340',
         fontSize : '2.1rem',
     },
 
@@ -35,10 +53,9 @@ export const useStyles = makeStyles((theme) => ({
         }
      
     },
-
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: "#fff",
+    divider : {
+      backgroundColor : "#0C2340",
+      height : "3px"
     },
   
   }));
@@ -50,6 +67,7 @@ export const MeetButton = withStyles({
       boxShadow: "none",
       textTransform: "capitalize",
       fontSize: 20,
+      cursor : 'none',
       padding: "20px 20px",
       margin : '20px 20px',
       border: "1px solid",
@@ -68,16 +86,6 @@ export const MeetButton = withStyles({
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(","),
-      "&:hover": {
-        backgroundColor: "#777777",
-        color: "#FEFEFE",
-        boxShadow: "none",
-      },
-      "&:active": {
-        boxShadow: "none",
-        backgroundColor: "#27293D",
-        borderColor: "#0C2340",
-        color: "#FEFEFE",
-      },
+  
     },
   })(Button);

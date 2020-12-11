@@ -56,6 +56,7 @@ function Chat() {
     socket.once("got kicked", (obj) => {
       history.push("/");
       toast.error("Got Kicked From The Room!", {
+        toastId : obj.id,
         position: "top-center",
       });
     });

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Input.css";
-import { Box, Button, IconButton, TextField } from "@material-ui/core";
+import { Box, Button, Hidden, IconButton, TextField } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import DrawModal from "./DrawModal";
@@ -77,7 +77,6 @@ function Input({ handleMessage }) {
         onKeyDown={handleEnter}
       />
 
-
       {/* RENDER EMOJI PICKER */}
       <div className="emoji-picker">
         <IconButton
@@ -100,7 +99,7 @@ function Input({ handleMessage }) {
         onClick={handleOpen}
         disabled={admin}
       >
-        Draw
+        <Hidden smDown>Draw</Hidden>
       </Button>
 
       <DrawModal
@@ -118,7 +117,7 @@ function Input({ handleMessage }) {
         startIcon={<SendIcon />}
         onClick={sendMessage}
       >
-        Send
+        <Hidden smDown>Send</Hidden>
       </Button>
     </Box>
   );

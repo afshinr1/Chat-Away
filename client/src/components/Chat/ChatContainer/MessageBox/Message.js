@@ -87,7 +87,7 @@ function convertToLocal(serverDate) {
   let minutes = date.getMinutes();
   let ampm = hours >= 12 ? 'pm' : 'am';
   hours = hours % 12;
-  hours = (hours == 0 ? 12 : hours);
+  hours = (hours === 0 ? 12 : hours);
   minutes = minutes < 10 ? '0'+minutes : minutes;
   const strDate = hours + ':' + minutes + ' ' + ampm;
 
