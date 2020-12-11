@@ -8,7 +8,7 @@ const addMessage = (message) => {
   let text = message.text;
   let uname = message.username;
   let color = message.color;
-  let date = moment().format("h:mm:ss a");
+  let date = new Date();
   const newMsg = { text: text, username: uname, color: color, date: date };
 
   messages.push(newMsg);
@@ -44,7 +44,7 @@ const createMessage = (type, text, username, profilePic) => {
     color: "000000",
     type : type,
     profilePic : profilePic,
-    date: moment().format("h:mm:ss a"),
+    date: new Date(),
   };
 };
 
