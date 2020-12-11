@@ -4,6 +4,8 @@ import "./MessageStyles.css";
 
 /* MESSAGE COMPONENT */
 function Message({ message, username }) {
+  const date = convertToLocal(message.date);
+
   let trimmedName = username.toLowerCase().trim();
   /* IF MESSAGE IS SENT BY USER, APPLY THESE STYLES */
   if (message.username === trimmedName) {
@@ -17,7 +19,7 @@ function Message({ message, username }) {
           </Typography>
 
           {/* DATE */}
-          <Typography variant="caption"> {message.date}</Typography>
+          <Typography variant="caption"> {date}</Typography>
         </div>
 
         <div className="messageContainer pr-10 justifyEnd">
@@ -52,7 +54,7 @@ function Message({ message, username }) {
           </Typography>
 
           {/* DATE */}
-          <Typography variant="caption">{message.date}</Typography>
+          <Typography variant="caption">{date}</Typography>
         </div>
 
         <div className="messageContainer justifyStart pl-10">
@@ -75,6 +77,21 @@ function Message({ message, username }) {
       </>
     );
   }
+}
+
+/* HELPER FUNCTIONS */
+function convertToLocal(serverDate) {
+  const date = new Date(serverDate);
+
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = (hours == 0 ? 12 : hours);
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  const strDate = hours + ':' + minutes + ' ' + ampm;
+
+  return strDate;
 }
 
 export default Message;
